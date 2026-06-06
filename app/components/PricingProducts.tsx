@@ -27,7 +27,8 @@ export function PricingProducts({pricing}: PricingProductsProps) {
       `/get-started?plan=${productId}&currency=${pricing.currency}`,
       pricing.language,
     );
-  const getStartedLabel = pricing.language === 'fr' ? 'Demarrer' : 'Get started';
+  const getStartedLabel =
+    pricing.language === 'fr' ? 'Demarrer' : 'Get started';
   const bookLabel =
     pricing.language === 'fr' ? 'Reserver un appel' : 'Book a call';
 
@@ -37,7 +38,7 @@ export function PricingProducts({pricing}: PricingProductsProps) {
         <div className="pricing-control">
           <span>{pricing.copy.modeLabel}</span>
           <div
-            className="pricing-toggle"
+            className={`pricing-toggle mode-${activeMode}`}
             role="tablist"
             aria-label={pricing.copy.modeLabel}
           >
