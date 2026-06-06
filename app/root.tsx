@@ -16,6 +16,7 @@ import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import legalStyles from '~/styles/legal.css?url';
+import {getLanguageFromRequest} from '~/lib/i18n';
 import {PageLayout} from './components/PageLayout';
 
 export type RootLoader = typeof loader;
@@ -82,7 +83,7 @@ export async function loader(args: Route.LoaderArgs) {
   return {
     ...deferredData,
     ...criticalData,
-    language: getRequestLanguage(args.request),
+    language: getLanguageFromRequest(args.request),
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     shop: getShopAnalytics({
       storefront,
@@ -97,11 +98,6 @@ export async function loader(args: Route.LoaderArgs) {
       language: args.context.storefront.i18n.language,
     },
   };
-}
-
-function getRequestLanguage(request: Request) {
-  const url = new URL(request.url);
-  return url.searchParams.get('lang') === 'fr' ? 'fr' : 'en';
 }
 
 /**

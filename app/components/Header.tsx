@@ -3,12 +3,20 @@ import {Await, Link, NavLink, useLocation} from 'react-router';
 import type {CartApiQueryFragment, HeaderQuery} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
 import {
-  moreNavItems,
-  navItems,
-  primaryNavItems,
-  services,
+  getMoreNavItems,
+  getNavItems,
+  getPrimaryNavItems,
+  getServices,
+  getSiteText,
   siteConfig,
 } from '~/lib/pasquin';
+import {
+  getLanguageHref,
+  getLocalizedHref,
+  languageConfig,
+  useSelectedLanguage,
+  type LanguageCode,
+} from '~/lib/i18n';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -18,11 +26,12 @@ interface HeaderProps {
 }
 
 type Viewport = 'desktop' | 'mobile';
-type LanguageCode = 'en' | 'fr';
-
 export function Header({isLoggedIn}: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const primaryNavItems = getPrimaryNavItems(language);
+  const moreNavItems = getMoreNavItems(language);
 
   useEffect(() => {
     function updateHeaderState() {
@@ -43,7 +52,7 @@ export function Header({isLoggedIn}: HeaderProps) {
             className="site-wordmark"
             end
             prefetch="intent"
-            to="/"
+            to={getLocalizedHref('/', language)}
           >
             <span className="brand-slash" aria-hidden="true">
               /
@@ -67,7 +76,7 @@ export function Header({isLoggedIn}: HeaderProps) {
                 </NavLink>
               ))}
               <div className="nav-link nav-more">
-                More
+                {text.nav.more}
                 <div className="nav-dropdown">
                   <div className="nav-dropdown-inner">
                     {moreNavItems.map((item) => (
@@ -87,13 +96,13 @@ export function Header({isLoggedIn}: HeaderProps) {
           </div>
 
           <div className="header-actions">
-            <LanguageSwitcher />
+              <LanguageSwitcher />
             <ClientLoginLink isLoggedIn={isLoggedIn} language={language} />
             <NavLink
               className="btn secondary header-contact-btn"
               to={getLocalizedHref('/contact', language)}
             >
-              Contact
+              {text.nav.contact}
             </NavLink>
           </div>
           <HeaderMenuMobileToggle />
@@ -114,6 +123,9 @@ export function HeaderMenu({
 }) {
   const {close} = useAside();
   const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const navItems = getNavItems(language);
+  const services = getServices(language);
 
   return (
     <nav className={`header-menu-${viewport}`} aria-label={`${viewport} navigation`}>
@@ -123,7 +135,7 @@ export function HeaderMenu({
         prefetch="intent"
         to={getLocalizedHref('/', language)}
       >
-        What We Do
+        {text.nav.whatWeDo}
       </NavLink>
       {navItems
         .filter((item) => item.href !== '/')
@@ -138,7 +150,7 @@ export function HeaderMenu({
           </NavLink>
         ))}
       <div className="mobile-menu-services">
-        <span>Services</span>
+        <span>{text.nav.services}</span>
         {services.map((service) => (
           <a
             href={getLocalizedHref('/#services', language)}
@@ -164,10 +176,22 @@ export function HeaderMenu({
 
 function LanguageSwitcher({onNavigate}: {onNavigate?: () => void}) {
   const location = useLocation();
-  const selectedLanguage = getSelectedLanguage(location.search);
-  const languages: Array<{code: LanguageCode; label: string; hrefLang: string}> = [
-    {code: 'en', label: 'EN', hrefLang: 'en-CA'},
-    {code: 'fr', label: 'FR', hrefLang: 'fr-CA'},
+  const selectedLanguage = useSelectedLanguage();
+  const languages: Array<{
+    code: LanguageCode;
+    label: string;
+    hrefLang: string;
+  }> = [
+    {
+      code: 'en',
+      label: languageConfig.en.label,
+      hrefLang: languageConfig.en.hrefLang,
+    },
+    {
+      code: 'fr',
+      label: languageConfig.fr.label,
+      hrefLang: languageConfig.fr.hrefLang,
+    },
   ];
 
   return (
@@ -203,15 +227,16 @@ function ClientLoginLink({
   language: LanguageCode;
   onClick?: () => void;
 }) {
+  const text = getSiteText(language);
   const fallback = (
     <NavLink
-      aria-label="Client login"
+      aria-label={text.nav.loginAria}
       className={className}
       onClick={onClick}
       prefetch="intent"
       to={getLoginHref(false, language)}
     >
-      Login
+      {text.nav.login}
     </NavLink>
   );
 
@@ -224,60 +249,18 @@ function ClientLoginLink({
       <Await resolve={isLoggedIn} errorElement={fallback}>
         {(loggedIn) => (
           <NavLink
-            aria-label={loggedIn ? 'Client account' : 'Client login'}
+            aria-label={loggedIn ? text.nav.clientAria : text.nav.loginAria}
             className={className}
             onClick={onClick}
             prefetch="intent"
             to={getLoginHref(loggedIn, language)}
           >
-            {loggedIn ? 'Client' : 'Login'}
+            {loggedIn ? text.nav.client : text.nav.login}
           </NavLink>
         )}
       </Await>
     </Suspense>
   );
-}
-
-function useSelectedLanguage() {
-  const location = useLocation();
-  return getSelectedLanguage(location.search);
-}
-
-function getSelectedLanguage(search: string): LanguageCode {
-  return new URLSearchParams(search).get('lang') === 'fr' ? 'fr' : 'en';
-}
-
-function getLanguageHref(
-  location: ReturnType<typeof useLocation>,
-  language: LanguageCode,
-) {
-  const params = new URLSearchParams(location.search);
-
-  if (language === 'fr') {
-    params.set('lang', 'fr');
-  } else {
-    params.delete('lang');
-  }
-
-  const search = params.toString();
-  return `${location.pathname}${search ? `?${search}` : ''}${location.hash}`;
-}
-
-function getLocalizedHref(href: string, language: LanguageCode) {
-  const hashIndex = href.indexOf('#');
-  const base = hashIndex >= 0 ? href.slice(0, hashIndex) : href;
-  const hash = hashIndex >= 0 ? href.slice(hashIndex) : '';
-  const [pathname, search = ''] = base.split('?');
-  const params = new URLSearchParams(search);
-
-  if (language === 'fr') {
-    params.set('lang', 'fr');
-  } else {
-    params.delete('lang');
-  }
-
-  const query = params.toString();
-  return `${pathname || '/'}${query ? `?${query}` : ''}${hash}`;
 }
 
 function getLoginHref(loggedIn: boolean, language: LanguageCode) {
@@ -290,9 +273,11 @@ function getLoginHref(loggedIn: boolean, language: LanguageCode) {
 
 function HeaderMenuMobileToggle() {
   const {open} = useAside();
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
   return (
     <button className="menu-toggle reset" onClick={() => open('mobile')} type="button">
-      Menu
+      {text.nav.menu}
     </button>
   );
 }

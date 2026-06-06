@@ -1,16 +1,18 @@
 import {Link} from 'react-router';
 import type {ReactNode} from 'react';
 import {
-  bankPackages,
-  feedbackNotes,
-  logoGridItems,
-  merchantWins,
-  processSteps,
-  retainerPackages,
-  services,
-  timeframeRows,
-  workItems,
+  getBankPackages,
+  getFeedbackNotes,
+  getLogoGridItems,
+  getMerchantWins,
+  getProcessSteps,
+  getRetainerPackages,
+  getServices,
+  getSiteText,
+  getTimeframeRows,
+  getWorkItems,
 } from '~/lib/pasquin';
+import {getLocalizedHref, useSelectedLanguage} from '~/lib/i18n';
 
 export function PageIntro({
   eyebrow,
@@ -25,6 +27,10 @@ export function PageIntro({
   ctaLabel?: string;
   ctaHref?: string;
 }) {
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const localizedCtaHref = getLocalizedHref(ctaHref, language);
+
   return (
     <section className="page-intro">
       <div className="gap-xl" />
@@ -36,8 +42,8 @@ export function PageIntro({
           <div className="intro-side">
             {children}
             <div className="btn-grp">
-              <Link className="btn big" to={ctaHref}>
-                {ctaLabel}
+              <Link className="btn big" to={localizedCtaHref}>
+                {ctaLabel === 'Get In Touch' ? text.cta.button : ctaLabel}
               </Link>
             </div>
           </div>
@@ -49,20 +55,23 @@ export function PageIntro({
 }
 
 export function HomeHero() {
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+
   return (
     <section className="hero-container">
       <div className="gap-xl" />
       <div className="container">
         <div className="hero-proof-callout" role="status">
           <span className="hero-proof-dot" aria-hidden="true" />
-          <span>Bank of hours from $1,000 / Montreal Shopify developer</span>
+          <span>{text.home.proof}</span>
         </div>
         <div className="gap-l" />
         <div className="hero-text-wrap">
-          <h1>Shopify development that keeps your store moving.</h1>
+          <h1>{text.home.title}</h1>
           <div className="btn-grp">
-            <Link to="/contact" className="btn big">
-              Get In Touch
+            <Link to={getLocalizedHref('/contact', language)} className="btn big">
+              {text.home.cta}
             </Link>
           </div>
         </div>
@@ -73,8 +82,12 @@ export function HomeHero() {
 }
 
 export function FeaturedWork() {
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const workItems = getWorkItems(language);
+
   return (
-    <section aria-label="Featured Shopify work" className="work-slider">
+    <section aria-label={text.home.featuredWorkAria} className="work-slider">
       <div className="work-slider-viewport">
         <div className="work-slider-track">
           {workItems.slice(0, 6).map((item) => (
@@ -95,9 +108,13 @@ export function FeaturedWork() {
 }
 
 export function ServiceCards() {
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const services = getServices(language);
+
   return (
     <section className="container" id="services">
-      <h3 className="h4">Shopify support across the work that slows merchants down</h3>
+      <h3 className="h4">{text.home.serviceHeading}</h3>
       <div className="gap-l" />
       <div className="card-grid three-up">
         {services.map((service) => (
@@ -120,13 +137,17 @@ export function ServiceCards() {
 }
 
 export function LogoGrid() {
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const logoGridItems = getLogoGridItems(language);
+
   return (
     <section className="container">
-      <h3 className="h4">I work where Shopify stores usually get messy</h3>
+      <h3 className="h4">{text.home.logoHeading}</h3>
       <div className="gap-l" />
       <div className="logo-grid">
         {logoGridItems.map((item) => (
-          <a href="/work" key={item}>
+          <a href={getLocalizedHref('/work', language)} key={item}>
             <span>{item}</span>
           </a>
         ))}
@@ -136,6 +157,8 @@ export function LogoGrid() {
 }
 
 export function WorkGrid({limit}: {limit?: number}) {
+  const language = useSelectedLanguage();
+  const workItems = getWorkItems(language);
   const items = typeof limit === 'number' ? workItems.slice(0, limit) : workItems;
 
   return (
@@ -151,40 +174,83 @@ export function WorkGrid({limit}: {limit?: number}) {
   );
 }
 
-export function ProjectCover({item}: {item: (typeof workItems)[number]}) {
-  return (
-    <Link className="project-card" to="/contact" aria-label={item.title}>
-      <div
-        className="project-grid-cover"
-        style={{backgroundImage: `url(${item.image})`}}
-      >
-        <img src={item.image} alt="" loading="lazy" />
+export function ProjectCover({item}: {item: ReturnType<typeof getWorkItems>[number]}) {
+  const language = useSelectedLanguage();
+  const initials = item.title
+    .split(/\s+/)
+    .map((word) => word[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
+  const cover = (
+    <>
+      <div className="project-grid-cover">
+        <img
+          src={item.image}
+          alt={`${item.title} website screenshot`}
+          loading="lazy"
+        />
         <div className="project-card-overlay">
           <div className="project-card-overlay-shade" />
           <div className="project-card-overlay-blur-1" />
           <div className="project-card-overlay-blur-2" />
           <div className="project-card-overlay-inner">
             <div className="project-card-logo" aria-hidden="true">
-              {item.eyebrow.slice(0, 1)}
+              {initials}
             </div>
             <div className="project-card-text">
+              <div className="project-card-meta">{item.eyebrow}</div>
               <div className="project-card-company">{item.title}</div>
               <div className="project-card-title">{item.text}</div>
+              <div className="project-card-tags" aria-hidden="true">
+                {item.tags.slice(0, 3).map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </>
+  );
+
+  if ('href' in item && item.href) {
+    return (
+      <a
+        className="project-card"
+        href={item.href}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={`${item.title} website`}
+      >
+        {cover}
+      </a>
+    );
+  }
+
+  return (
+    <Link
+      className="project-card"
+      to={getLocalizedHref('/contact', language)}
+      aria-label={item.title}
+    >
+      {cover}
     </Link>
   );
 }
 
 export function PricingCards() {
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const bankPackages = getBankPackages(language);
+  const retainerPackages = getRetainerPackages(language);
   const pricingCards = [
     {
-      label: 'Bank',
+      label: text.pricing.bankLabel,
       name: bankPackages[0].name,
       price: bankPackages[0].price,
-      cadence: 'one-time, scoped start',
+      cadence: text.pricing.oneTimeScoped,
       features: [
         bankPackages[0].hours,
         bankPackages[0].bestFor,
@@ -192,10 +258,10 @@ export function PricingCards() {
       ],
     },
     {
-      label: 'Retainer',
+      label: text.pricing.retainerLabel,
       name: retainerPackages[0].name,
       price: retainerPackages[0].price,
-      cadence: 'per month',
+      cadence: text.pricing.perMonth,
       features: [
         retainerPackages[0].detail,
         retainerPackages[0].bestFor,
@@ -203,11 +269,11 @@ export function PricingCards() {
       ],
     },
     {
-      label: 'Retainer',
+      label: text.pricing.retainerLabel,
       name: retainerPackages[1].name,
       price: retainerPackages[1].price,
-      cadence: 'per month',
-      badge: 'Most Popular',
+      cadence: text.pricing.perMonth,
+      badge: text.pricing.popular,
       features: [
         retainerPackages[1].detail,
         retainerPackages[1].bestFor,
@@ -215,10 +281,10 @@ export function PricingCards() {
       ],
     },
     {
-      label: 'Bank',
+      label: text.pricing.bankLabel,
       name: bankPackages[2].name,
       price: bankPackages[2].price,
-      cadence: 'one-time sprint',
+      cadence: text.pricing.oneTimeSprint,
       features: [
         bankPackages[2].hours,
         bankPackages[2].bestFor,
@@ -232,13 +298,12 @@ export function PricingCards() {
       <div className="pricing-grid">
         <article className="price-card by-hour">
           <div>
-            <div className="mini-heading">By The Hour</div>
+            <div className="mini-heading">{text.pricing.byHour}</div>
             <h2>$200/h</h2>
-            <p>per hour</p>
+            <p>{text.pricing.perHour}</p>
           </div>
           <div className="price-card-note">
-            This option is typically reserved for ad-hoc consulting and quick
-            diagnostics.
+            {text.pricing.hourlyNote}
           </div>
         </article>
         {pricingCards.map((item) => (
@@ -268,16 +333,20 @@ export function PricingCards() {
       <div className="gap-l" />
       <div className="currency-note">
         <span>CAD</span>
-        <p>Retainers include a 10% maximum rollover.</p>
+        <p>{text.pricing.currencyNote}</p>
       </div>
     </section>
   );
 }
 
 export function TimeframeTable() {
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const timeframeRows = getTimeframeRows(language);
+
   return (
     <section className="container medium">
-      <div className="mini-heading">Typical scope</div>
+      <div className="mini-heading">{text.pricing.typicalScope}</div>
       <div className="gap-m" />
       <div className="simple-table">
         {timeframeRows.map(([project, timeframe]) => (
@@ -292,6 +361,9 @@ export function TimeframeTable() {
 }
 
 export function ProcessList() {
+  const language = useSelectedLanguage();
+  const processSteps = getProcessSteps(language);
+
   return (
     <section className="container">
       <div className="cols three-up med-gap">
@@ -308,6 +380,10 @@ export function ProcessList() {
 }
 
 export function FeedbackFeature() {
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const feedbackNotes = getFeedbackNotes(language);
+  const workItems = getWorkItems(language);
   const note = feedbackNotes[0];
 
   return (
@@ -315,7 +391,7 @@ export function FeedbackFeature() {
       <div className="card testimonial-card">
         <div className="testimonial-inner">
           <div className="testim-left">
-            <div className="mini-heading">Working signal</div>
+            <div className="mini-heading">{text.feedback.workingSignal}</div>
             <div className="gap-m" />
             <h2 className="h3">&quot;{note.quote}&quot;</h2>
             <div className="gap-l" />
@@ -332,6 +408,9 @@ export function FeedbackFeature() {
 }
 
 export function FeedbackGrid() {
+  const language = useSelectedLanguage();
+  const feedbackNotes = getFeedbackNotes(language);
+
   return (
     <section className="container">
       <div className="card-grid two-up">
@@ -349,15 +428,18 @@ export function FeedbackGrid() {
 }
 
 export function CtaSection() {
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+
   return (
     <section className="container cta-section">
       <hr />
       <div className="gap-xl" />
-      <h2>Let&apos;s make the store easier to run.</h2>
+      <h2>{text.cta.title}</h2>
       <div className="gap-l" />
       <div className="btn-grp center">
-        <Link to="/contact" className="btn big">
-          Get In Touch
+        <Link to={getLocalizedHref('/contact', language)} className="btn big">
+          {text.cta.button}
         </Link>
       </div>
       <div className="gap-xl" />
@@ -367,15 +449,18 @@ export function CtaSection() {
 }
 
 export function MerchantWinsTicker() {
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const merchantWins = getMerchantWins(language);
   const tickerItems = [
     ...merchantWins.map((item) => ({item, set: 'first'})),
     ...merchantWins.map((item) => ({item, set: 'second'})),
   ];
 
   return (
-    <section className="ticker-wrap" aria-label="Merchant wins">
+    <section className="ticker-wrap" aria-label={text.feedback.merchantWins}>
       <div className="container">
-        <div className="mini-heading">Merchant Wins</div>
+        <div className="mini-heading">{text.feedback.merchantWins}</div>
       </div>
       <div className="ticker">
         {tickerItems.map(({item, set}) => (

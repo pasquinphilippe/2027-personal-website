@@ -1,21 +1,31 @@
-import {Link, useLoaderData, useLocation} from 'react-router';
+import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/client-login';
-import {getPublicConfig} from '~/lib/pasquin';
+import {clientPortalItems, getPublicConfig, getSiteText} from '~/lib/pasquin';
+import {
+  getLanguageFromPathSearch,
+  getLocalizedHref,
+  useSelectedLanguage,
+} from '~/lib/i18n';
 
-const portalItems = [
-  ['01', 'Retainers', 'Monthly priorities, support notes, and next actions.'],
-  ['02', 'Bank of hours', 'Scope, remaining time, and implementation status.'],
-  ['03', 'Launch support', 'Checklist items, blockers, and handoff references.'],
-];
+export const meta: Route.MetaFunction = ({location}) => {
+  const language = getLanguageFromPathSearch(location.pathname, location.search);
 
-export const meta: Route.MetaFunction = () => [
-  {title: 'Client Portal | Philippe Pasquin Shopify Developer'},
-  {
-    name: 'description',
-    content:
-      'Client portal access for active Shopify development retainers, bank-of-hours work, and launch support with Philippe Pasquin.',
-  },
-];
+  return [
+    {
+      title:
+        language === 'fr'
+          ? 'Portail client | Philippe Pasquin Developpeur Shopify'
+          : 'Client Portal | Philippe Pasquin Shopify Developer',
+    },
+    {
+      name: 'description',
+      content:
+        language === 'fr'
+          ? "Acces portail client pour retainers Shopify actifs, banques d'heures et support lancement avec Philippe Pasquin."
+          : 'Client portal access for active Shopify development retainers, bank-of-hours work, and launch support with Philippe Pasquin.',
+    },
+  ];
+};
 
 export async function loader({context}: Route.LoaderArgs) {
   return {
@@ -25,11 +35,11 @@ export async function loader({context}: Route.LoaderArgs) {
 
 export default function ClientLoginPage() {
   const {publicConfig} = useLoaderData<typeof loader>();
-  const location = useLocation();
-  const language = new URLSearchParams(location.search).get('lang') === 'fr' ? 'fr' : 'en';
-  const contactPath = language === 'fr' ? '/contact?lang=fr' : '/contact';
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const contactPath = getLocalizedHref('/contact', language);
   const requestAccessHref = `mailto:${publicConfig.contactEmail}?subject=${encodeURIComponent(
-    'Client portal access',
+    text.clientLogin.subject,
   )}`;
 
   return (
@@ -40,53 +50,53 @@ export default function ClientLoginPage() {
           <div className="client-login-copy">
             <div className="hero-proof-callout">
               <span className="hero-proof-dot" aria-hidden="true"></span>
-              <span>Client portal / Shopify support workspace</span>
+              <span>{text.clientLogin.proof}</span>
             </div>
             <div className="gap-l" />
-            <h1>Client access for active Shopify work.</h1>
+            <h1>{text.clientLogin.title}</h1>
             <div className="gap-m" />
             <p className="subtitle light">
-              Portal access is issued after the scope is confirmed, so priorities,
-              files, notes, and decisions stay organized around the work.
+              {text.clientLogin.intro}
             </p>
             <div className="gap-m-plus" />
             <div className="btn-grp">
               <a className="btn big" href={requestAccessHref}>
-                Request Access
+                {text.clientLogin.requestAccess}
               </a>
               <Link className="btn secondary big" to={contactPath}>
-                Book a Meeting
+                {text.clientLogin.bookMeeting}
               </Link>
             </div>
           </div>
 
           <div className="client-login-panel" aria-label="Portal access details">
             <div>
-              <div className="mini-heading">Access Status</div>
+              <div className="mini-heading">{text.clientLogin.statusHeading}</div>
               <div className="gap-s" />
-              <h2 className="h4">Invitation required.</h2>
+              <h2 className="h4">{text.clientLogin.statusTitle}</h2>
               <p className="light">
-                If you already have an active workspace, use the access link sent
-                with your onboarding details.
+                {text.clientLogin.statusText}
               </p>
             </div>
 
             <div className="client-login-list">
-              {portalItems.map(([number, title, text]) => (
-                <div className="client-login-row" key={title}>
-                  <span>{number}</span>
+              {clientPortalItems.map((item) => (
+                <div className="client-login-row" key={item.number}>
+                  <span>{item.number}</span>
                   <div>
-                    <strong>{title}</strong>
-                    <p>{text}</p>
+                    <strong>{item.title[language]}</strong>
+                    <p>{item.text[language]}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             <div className="pill-row">
-              <span className="pill">Private by default</span>
-              <span className="pill">Scope-first</span>
-              <span className="pill">Merchant-focused</span>
+              {text.clientLogin.pills.map((pill) => (
+                <span className="pill" key={pill}>
+                  {pill}
+                </span>
+              ))}
             </div>
           </div>
         </div>

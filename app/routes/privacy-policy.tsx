@@ -1,19 +1,155 @@
 import type {Route} from './+types/privacy-policy';
 import {PolicySection, PolicyShell} from '~/components/PolicyShell';
+import {getLanguageFromPathSearch, useSelectedLanguage} from '~/lib/i18n';
 import {siteConfig} from '~/lib/pasquin';
 
 const updated = 'June 6, 2026';
+const updatedFr = '6 juin 2026';
 
-export const meta: Route.MetaFunction = () => [
-  {title: 'Privacy Policy | Philippe Pasquin'},
-  {
-    name: 'description',
-    content:
-      'Privacy policy for Philippe Pasquin, a Montreal-based Shopify developer.',
-  },
-];
+export const meta: Route.MetaFunction = ({location}) => {
+  const language = getLanguageFromPathSearch(location.pathname, location.search);
+
+  return [
+    {
+      title:
+        language === 'fr'
+          ? 'Politique de confidentialite | Philippe Pasquin'
+          : 'Privacy Policy | Philippe Pasquin',
+    },
+    {
+      name: 'description',
+      content:
+        language === 'fr'
+          ? 'Politique de confidentialite pour Philippe Pasquin, developpeur Shopify base a Montreal.'
+          : 'Privacy policy for Philippe Pasquin, a Montreal-based Shopify developer.',
+    },
+  ];
+};
 
 export default function PrivacyPolicyPage() {
+  const language = useSelectedLanguage();
+
+  if (language === 'fr') {
+    return (
+      <PolicyShell
+        eyebrow="Confidentialite"
+        title="Politique de confidentialite"
+        description="Comment les renseignements personnels sont recueillis, utilises, partages et proteges lorsque vous utilisez ce site ou contactez Philippe Pasquin pour des services de developpement Shopify."
+        updated={updatedFr}
+      >
+        <PolicySection title="A qui s’applique cette politique">
+          <p>
+            Cette politique s’applique au site {siteConfig.defaultSiteUrl}, aux
+            parcours de contact et de prise de rendez-vous du site, ainsi qu’aux
+            discussions de service avec Philippe Pasquin.
+          </p>
+          <p>
+            Philippe Pasquin est base a Montreal, Quebec, et offre des services
+            de developpement Shopify aux marchands et aux equipes ecommerce.
+          </p>
+        </PolicySection>
+
+        <PolicySection title="Renseignements recueillis">
+          <p>
+            Le site et le parcours de service peuvent recueillir les
+            renseignements personnels que vous fournissez directement, incluant
+            votre nom, adresse courriel, entreprise, role, contexte de boutique
+            Shopify, notes de projet, preferences de rendez-vous et messages
+            envoyes par formulaire, courriel ou outil de planification.
+          </p>
+          <p>
+            Le site peut aussi recueillir des renseignements techniques limites,
+            comme l’adresse IP, le navigateur, l’appareil, les pages visitees,
+            la source de reference et les donnees de journaux serveur. Si des
+            outils d’analytics, Google Tag Manager, pixels publicitaires,
+            widgets de clavardage ou outils de planification integres sont
+            ajoutes, ces fournisseurs doivent etre indiques dans cette politique
+            et dans l’avis sur les cookies.
+          </p>
+        </PolicySection>
+
+        <PolicySection title="Utilisation des renseignements">
+          <p>Les renseignements personnels servent a:</p>
+          <ul>
+            <li>Repondre aux demandes et planifier des rendez-vous.</li>
+            <li>
+              Evaluer l’admissibilite, la portee, les delais et les prix des
+              travaux Shopify.
+            </li>
+            <li>
+              Livrer les banques d’heures, retainers, travaux de support et
+              projets.
+            </li>
+            <li>
+              Gerer la facturation, les dossiers, les communications client et
+              les suivis.
+            </li>
+            <li>
+              Garder le site fiable, securitaire, mesurable et continuellement
+              ameliore.
+            </li>
+            <li>
+              Respecter les obligations legales, fiscales, comptables et
+              contractuelles.
+            </li>
+          </ul>
+        </PolicySection>
+
+        <PolicySection title="Partage et fournisseurs de services">
+          <p>
+            Les renseignements personnels peuvent etre partages avec des
+            fournisseurs qui aident a exploiter le site et l’entreprise,
+            incluant l’hebergement, la planification, le courriel, les
+            analytics, la gestion de projet, la comptabilite, les paiements et
+            la securite. Ces fournisseurs peuvent traiter des renseignements au
+            Quebec, au Canada, aux Etats-Unis ou dans d’autres juridictions.
+          </p>
+          <p>
+            Les renseignements personnels ne sont pas vendus. Ils peuvent etre
+            communiques lorsque la loi l’exige, pour proteger des droits legaux
+            ou selon vos instructions dans le cadre de travaux de developpement
+            Shopify.
+          </p>
+        </PolicySection>
+
+        <PolicySection title="Consentement, acces et choix">
+          <p>
+            Vous pouvez contacter {siteConfig.defaultContactEmail} pour demander
+            l’acces a vos renseignements personnels, demander une correction,
+            retirer votre consentement lorsque applicable ou poser des questions
+            sur les pratiques de confidentialite.
+          </p>
+          <p>
+            Certains renseignements peuvent devoir etre conserves pour des
+            raisons legales, de securite, de comptabilite, contractuelles ou de
+            gestion d’entreprise legitime.
+          </p>
+        </PolicySection>
+
+        <PolicySection title="Conservation et securite">
+          <p>
+            Les renseignements personnels sont conserves seulement aussi
+            longtemps que raisonnablement necessaire pour la fin pour laquelle
+            ils ont ete recueillis, pour les dossiers de service ou lorsque la
+            loi l’exige. Des mesures administratives, techniques et
+            organisationnelles raisonnables sont utilisees pour proteger les
+            renseignements traites par le site et le parcours client.
+          </p>
+        </PolicySection>
+
+        <PolicySection title="Changements a la politique">
+          <p>
+            Cette politique doit etre mise a jour chaque fois que le site ajoute
+            ou modifie des fonctionnalites qui touchent les renseignements
+            personnels, incluant formulaires, selecteurs de rendez-vous,
+            portails clients, analytics, Google Tag Manager, pixels, cookies,
+            widgets de clavardage, medias integres ou integrations tierces.
+          </p>
+        </PolicySection>
+      </PolicyShell>
+    );
+  }
+
   return (
     <PolicyShell
       eyebrow="Privacy"

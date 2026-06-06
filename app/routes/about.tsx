@@ -4,24 +4,45 @@ import {
   MerchantWinsTicker,
   PageIntro,
 } from '~/components/LeanSections';
-import {processSteps, services, siteConfig} from '~/lib/pasquin';
+import {
+  getProcessSteps,
+  getServices,
+  getSiteText,
+  siteConfig,
+} from '~/lib/pasquin';
+import {getLanguageFromPathSearch, useSelectedLanguage} from '~/lib/i18n';
 
-export const meta: Route.MetaFunction = () => [
-  {title: 'About | Philippe Pasquin Shopify Developer'},
-  {
-    name: 'description',
-    content:
-      'About Philippe Pasquin, a Montreal-based Shopify developer helping merchants improve storefronts, apps, automation, performance, and support workflows.',
-  },
-];
+export const meta: Route.MetaFunction = ({location}) => {
+  const language = getLanguageFromPathSearch(location.pathname, location.search);
+
+  return [
+    {
+      title:
+        language === 'fr'
+          ? 'A propos | Philippe Pasquin Developpeur Shopify'
+          : 'About | Philippe Pasquin Shopify Developer',
+    },
+    {
+      name: 'description',
+      content:
+        language === 'fr'
+          ? 'A propos de Philippe Pasquin, developpeur Shopify base a Montreal pour storefronts, apps, automatisation, performance et support.'
+          : 'About Philippe Pasquin, a Montreal-based Shopify developer helping merchants improve storefronts, apps, automation, performance, and support workflows.',
+    },
+  ];
+};
 
 export default function AboutPage() {
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const services = getServices(language);
+  const processSteps = getProcessSteps(language);
+
   return (
     <>
-      <PageIntro title="Hey there. I'm Philippe." eyebrow="About">
+      <PageIntro title={text.pages.aboutTitle} eyebrow={text.pages.aboutEyebrow}>
         <p className="subtitle light">
-          A Montreal-based Shopify developer helping merchants move faster
-          without turning every storefront change into a heavy agency project.
+          {text.pages.aboutIntro}
         </p>
       </PageIntro>
 
@@ -39,8 +60,8 @@ export default function AboutPage() {
           <article className="about-person-card">
             <div className="about-avatar">S</div>
             <div>
-              <strong>Support rhythm</strong>
-              <span>Retainers</span>
+              <strong>{text.about.supportRhythm}</strong>
+              <span>{text.about.retainers}</span>
             </div>
           </article>
         </div>
@@ -49,20 +70,10 @@ export default function AboutPage() {
       <div className="gap-xxl" />
 
       <section className="container medium story-copy">
-        <div className="mini-heading">June 6, 2026</div>
-        <p>
-          I work close to the practical side of ecommerce: product pages, cart
-          behavior, theme code, app stacks, launch pressure, analytics, and the
-          small operational details that make a store feel hard to change.
-        </p>
-        <p>
-          The goal is simple. Make the store clearer, easier to maintain, and
-          easier for the merchant to operate after the work ships.
-        </p>
-        <p>
-          In short, I help Shopify teams keep moving when the technical work is
-          specific, overdue, or too important to leave vague.
-        </p>
+        <div className="mini-heading">{text.about.date}</div>
+        {text.about.paragraphs.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
       </section>
 
       <div className="gap-xxl" />
@@ -71,7 +82,7 @@ export default function AboutPage() {
         <div className="card profile-card">
           <div>
             <div className="mini-heading">{siteConfig.location.city}</div>
-            <h2>One Shopify developer, directly accountable to the work.</h2>
+            <h2>{text.about.profileTitle}</h2>
             <div className="gap-m" />
             <div className="process-inline">
               {processSteps.map((step) => (
@@ -82,9 +93,7 @@ export default function AboutPage() {
             </div>
           </div>
           <p className="light">
-            Bank-of-hours and retainer work are designed for merchants who want
-            clear scope, fast feedback loops, and code that does not create a
-            new maintenance problem.
+            {text.about.profileText}
           </p>
         </div>
       </section>

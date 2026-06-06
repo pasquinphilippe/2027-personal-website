@@ -6,16 +6,28 @@ import {
   PageIntro,
 } from '~/components/LeanSections';
 import {PasquinBookingSelector} from '~/components/PasquinBookingSelector';
-import {getPublicConfig} from '~/lib/pasquin';
+import {getPublicConfig, getSiteText} from '~/lib/pasquin';
+import {getLanguageFromPathSearch, useSelectedLanguage} from '~/lib/i18n';
 
-export const meta: Route.MetaFunction = () => [
-  {title: 'Contact | Philippe Pasquin Shopify Developer'},
-  {
-    name: 'description',
-    content:
-      'Contact Philippe Pasquin for Shopify development, bank-of-hours work, retainers, theme cleanup, integrations, and performance support.',
-  },
-];
+export const meta: Route.MetaFunction = ({location}) => {
+  const language = getLanguageFromPathSearch(location.pathname, location.search);
+
+  return [
+    {
+      title:
+        language === 'fr'
+          ? 'Contact | Philippe Pasquin Developpeur Shopify'
+          : 'Contact | Philippe Pasquin Shopify Developer',
+    },
+    {
+      name: 'description',
+      content:
+        language === 'fr'
+          ? "Contactez Philippe Pasquin pour developpement Shopify, banques d'heures, retainers, nettoyage de theme, integrations et performance."
+          : 'Contact Philippe Pasquin for Shopify development, bank-of-hours work, retainers, theme cleanup, integrations, and performance support.',
+    },
+  ];
+};
 
 export async function loader({context}: Route.LoaderArgs) {
   return {
@@ -25,13 +37,14 @@ export async function loader({context}: Route.LoaderArgs) {
 
 export default function ContactPage() {
   const {publicConfig} = useLoaderData<typeof loader>();
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
 
   return (
     <>
-      <PageIntro title="Let's make the store easier to run." eyebrow="Contact">
+      <PageIntro title={text.pages.contactTitle} eyebrow={text.pages.contactEyebrow}>
         <p className="subtitle light">
-          Pick the closest path, send a little context, and book a focused
-          conversation about the Shopify work.
+          {text.pages.contactIntro}
         </p>
       </PageIntro>
       <FeedbackGrid />
@@ -39,7 +52,7 @@ export default function ContactPage() {
       <PasquinBookingSelector publicConfig={publicConfig} />
       <div className="gap-xxl" />
       <section className="container medium email-line">
-        <p>or email directly at</p>
+        <p>{text.pages.emailLead}</p>
         <a href={`mailto:${publicConfig.contactEmail}`}>{publicConfig.contactEmail}</a>
       </section>
       <div className="gap-xxl" />

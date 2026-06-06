@@ -1,6 +1,7 @@
 import type {ReactNode} from 'react';
 import {NavLink} from 'react-router';
-import {legalNavItems} from '~/lib/legal';
+import {getLegalNavItems} from '~/lib/legal';
+import {getLocalizedHref, useSelectedLanguage} from '~/lib/i18n';
 import {siteConfig} from '~/lib/pasquin';
 
 export function PolicyShell({
@@ -16,6 +17,16 @@ export function PolicyShell({
   updated: string;
   children: ReactNode;
 }) {
+  const language = useSelectedLanguage();
+  const legalNavItems = getLegalNavItems(language);
+  const legalHeading = language === 'fr' ? 'Politiques' : 'Legal';
+  const legalAriaLabel = language === 'fr' ? 'Pages legales' : 'Legal pages';
+  const updatedLabel = language === 'fr' ? 'Mis a jour le' : 'Last updated';
+  const questionsLabel =
+    language === 'fr'
+      ? 'Questions sur ces politiques?'
+      : 'Questions about these policies?';
+
   return (
     <>
       <section className="policy-hero">
@@ -23,7 +34,9 @@ export function PolicyShell({
         <div className="container">
           <div className="policy-meta-row">
             <div className="hero-proof-callout">{eyebrow}</div>
-            <div className="small-text light">Last updated {updated}</div>
+            <div className="small-text light">
+              {updatedLabel} {updated}
+            </div>
           </div>
           <div className="gap-l" />
           <div className="hero-text-wrap policy-hero-wrap">
@@ -35,10 +48,14 @@ export function PolicyShell({
       </section>
 
       <section className="container policy-layout">
-        <aside className="policy-sidebar" aria-label="Legal pages">
-          <div className="mini-heading">Legal</div>
+        <aside className="policy-sidebar" aria-label={legalAriaLabel}>
+          <div className="mini-heading">{legalHeading}</div>
           {legalNavItems.map((item) => (
-            <NavLink className="policy-nav-link" key={item.href} to={item.href}>
+            <NavLink
+              className="policy-nav-link"
+              key={item.href}
+              to={getLocalizedHref(item.href, language)}
+            >
               {item.label}
             </NavLink>
           ))}
@@ -47,7 +64,7 @@ export function PolicyShell({
         <div className="policy-content">
           {children}
           <div className="policy-contact">
-            <span>Questions about these policies?</span>
+            <span>{questionsLabel}</span>
             <a href={`mailto:${siteConfig.defaultContactEmail}`}>
               {siteConfig.defaultContactEmail}
             </a>

@@ -5,27 +5,46 @@ import {
   PageIntro,
   WorkGrid,
 } from '~/components/LeanSections';
-import {workItems} from '~/lib/pasquin';
+import {getSiteText, getWorkItems} from '~/lib/pasquin';
+import {getLanguageFromPathSearch, useSelectedLanguage} from '~/lib/i18n';
 
-export const meta: Route.MetaFunction = () => [
-  {title: 'Our Work | Philippe Pasquin Shopify Developer'},
-  {
-    name: 'description',
-    content:
-      'Selected Shopify development work areas: storefront systems, theme cleanup, integrations, operations automation, conversion, and monthly support.',
-  },
-];
+export const meta: Route.MetaFunction = ({location}) => {
+  const language = getLanguageFromPathSearch(location.pathname, location.search);
+
+  return [
+    {
+      title:
+        language === 'fr'
+          ? 'Projets clients | Philippe Pasquin Developpeur Shopify'
+          : 'Client Work | Philippe Pasquin Shopify Developer',
+    },
+    {
+      name: 'description',
+      content:
+        language === 'fr'
+          ? 'Projets clients selectionnes en developpement Shopify, B2B, POS, ERP, SEO, automatisation et support technique continu.'
+          : 'Selected client projects across Shopify theme development, B2B features, POS apps, ERP integrations, SEO, automation, and ongoing technical support.',
+    },
+  ];
+};
 
 export default function WorkPage() {
-  const tags = ['All', 'theme', 'conversion', 'apps', 'automation', 'support'];
+  const language = useSelectedLanguage();
+  const text = getSiteText(language);
+  const workItems = getWorkItems(language);
+  const tags =
+    language === 'fr'
+      ? ['Tous', 'theme', 'b2b', 'apps', 'pos', 'seo', 'support']
+      : ['All', 'theme', 'b2b', 'apps', 'pos', 'seo', 'support'];
+  const allTag = language === 'fr' ? 'Tous' : 'All';
 
   return (
     <>
-      <PageIntro title="Our Work" eyebrow="Selected Shopify work">
+      <PageIntro title={text.pages.workTitle} eyebrow={text.pages.workEyebrow}>
         <div className="filter-row" aria-label="Work filters">
           {tags.map((tag) => (
             <span className="pill" key={tag}>
-              {tag} {tag === 'All' ? workItems.length : ''}
+              {tag} {tag === allTag ? workItems.length : ''}
             </span>
           ))}
         </div>
