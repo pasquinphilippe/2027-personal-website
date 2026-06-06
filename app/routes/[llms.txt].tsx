@@ -7,6 +7,7 @@ import {
   getServices,
   siteConfig,
 } from '~/lib/pasquin';
+import {getServicePageSummaries} from '~/lib/servicePages';
 
 export function loader({context}: Route.LoaderArgs) {
   const publicConfig = getPublicConfig(context.env);
@@ -18,6 +19,9 @@ export function loader({context}: Route.LoaderArgs) {
   const frenchRetainers = getRetainerPackages('fr');
   const englishFaqs = getFaqs('en');
   const frenchFaqs = getFaqs('fr');
+  const baseUrl = publicConfig.siteUrl.replace(/\/$/, '');
+  const englishServicePages = getServicePageSummaries('en');
+  const frenchServicePages = getServicePageSummaries('fr');
   const lines = [
     '# Philippe Pasquin',
     '',
@@ -38,8 +42,20 @@ export function loader({context}: Route.LoaderArgs) {
     '## Services (English)',
     ...englishServices.map((service) => `- ${service.title}: ${service.text}`),
     '',
+    '## Service pages (English)',
+    ...englishServicePages.map(
+      (service) =>
+        `- ${service.navLabel}: ${baseUrl}${service.href} - ${service.summary}`,
+    ),
+    '',
     '## Services (French)',
     ...frenchServices.map((service) => `- ${service.title}: ${service.text}`),
+    '',
+    '## Pages de services (French)',
+    ...frenchServicePages.map(
+      (service) =>
+        `- ${service.navLabel}: ${baseUrl}/fr${service.href} - ${service.summary}`,
+    ),
     '',
     '## Bank of hours',
     ...englishBankPackages.map(

@@ -1,14 +1,13 @@
 import {NavLink} from 'react-router';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
 import {
-  getCapabilities,
   getNavItems,
-  getServices,
   getSiteText,
   siteConfig,
 } from '~/lib/pasquin';
 import {getLegalNavItems} from '~/lib/legal';
 import {getLocalizedHref, useSelectedLanguage} from '~/lib/i18n';
+import {getServicePageSummaries} from '~/lib/servicePages';
 
 interface FooterProps {
   footer: Promise<FooterQuery | null>;
@@ -20,8 +19,8 @@ export function Footer(_props: FooterProps) {
   const language = useSelectedLanguage();
   const text = getSiteText(language);
   const navItems = getNavItems(language);
-  const services = getServices(language);
-  const capabilities = getCapabilities(language);
+  const services = getServicePageSummaries(language, 'services');
+  const capabilities = getServicePageSummaries(language, 'shopifyWork');
   const legalNavItems = getLegalNavItems(language);
 
   return (
@@ -55,26 +54,26 @@ export function Footer(_props: FooterProps) {
         <div>
           <div className="mini-heading">{text.footer.services}</div>
           {services.map((service) => (
-            <a
+            <NavLink
               className="footer-link"
-              href={getLocalizedHref('/#services', language)}
-              key={service.title}
+              to={getLocalizedHref(service.href, language)}
+              key={service.slug}
             >
-              {service.title}
-            </a>
+              {service.navLabel}
+            </NavLink>
           ))}
         </div>
 
         <div>
           <div className="mini-heading">{text.footer.shopifyWork}</div>
-          {capabilities.slice(0, 7).map((item) => (
-            <a
+          {capabilities.map((service) => (
+            <NavLink
               className="footer-link"
-              href={getLocalizedHref('/work', language)}
-              key={item}
+              to={getLocalizedHref(service.href, language)}
+              key={service.slug}
             >
-              {item}
-            </a>
+              {service.navLabel}
+            </NavLink>
           ))}
         </div>
 

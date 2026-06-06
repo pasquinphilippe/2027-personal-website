@@ -16,6 +16,7 @@ import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import legalStyles from '~/styles/legal.css?url';
+import serviceStyles from '~/styles/services.css?url';
 import {getLanguageFromRequest} from '~/lib/i18n';
 import {PageLayout} from './components/PageLayout';
 
@@ -161,6 +162,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
         <link rel="stylesheet" href={legalStyles}></link>
+        <link rel="stylesheet" href={serviceStyles}></link>
         <Meta />
         <Links />
       </head>

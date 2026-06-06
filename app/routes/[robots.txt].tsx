@@ -16,10 +16,11 @@ export function loader({request}: Route.LoaderArgs) {
 
 function robotsTxtData({url}: {url?: string}) {
   const sitemapUrl = url ? `${url}/sitemap.xml` : undefined;
+  const servicesSitemapUrl = url ? `${url}/services-sitemap.xml` : undefined;
 
   return `
 User-agent: *
-${generalDisallowRules({sitemapUrl})}
+${generalDisallowRules({sitemapUrl, servicesSitemapUrl})}
 
 # Google adsbot ignores robots.txt unless specifically named!
 User-agent: adsbot-google
@@ -34,11 +35,11 @@ Disallow: /
 
 User-agent: AhrefsBot
 Crawl-delay: 10
-${generalDisallowRules({sitemapUrl})}
+${generalDisallowRules({sitemapUrl, servicesSitemapUrl})}
 
 User-agent: AhrefsSiteAudit
 Crawl-delay: 10
-${generalDisallowRules({sitemapUrl})}
+${generalDisallowRules({sitemapUrl, servicesSitemapUrl})}
 
 User-agent: MJ12bot
 Crawl-Delay: 10
@@ -52,10 +53,17 @@ Crawl-delay: 1
  * This function generates disallow rules that generally follow what Shopify's
  * Online Store has as defaults for their robots.txt
  */
-function generalDisallowRules({sitemapUrl}: {sitemapUrl?: string}) {
+function generalDisallowRules({
+  sitemapUrl,
+  servicesSitemapUrl,
+}: {
+  sitemapUrl?: string;
+  servicesSitemapUrl?: string;
+}) {
   return `Disallow: /cart
 Disallow: /account
 Allow: /llms.txt
+Allow: /services-sitemap.xml
 Disallow: /collections/*sort_by*
 Disallow: /*/collections/*sort_by*
 Disallow: /collections/*+*
@@ -75,5 +83,6 @@ Disallow: /policies/
 Disallow: /search
 Allow: /search/
 Disallow: /search/?*
-${sitemapUrl ? `Sitemap: ${sitemapUrl}` : ''}`;
+${sitemapUrl ? `Sitemap: ${sitemapUrl}` : ''}
+${servicesSitemapUrl ? `Sitemap: ${servicesSitemapUrl}` : ''}`;
 }
