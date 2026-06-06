@@ -673,6 +673,9 @@ export const partnerReviewSummary = {
   sourceUrl:
     'https://www.shopify.com/partners/directory/partner/philippe-pasquin',
   priceRange: 'Starting from $150',
+  location: 'Montreal, Canada',
+  languages: 'English, French',
+  lastVerified: 'June 6, 2026',
 };
 
 export const partnerReviews = [
@@ -710,7 +713,7 @@ export const partnerReviews = [
     date: 'Jun 10, 2024',
     datePublished: '2024-06-10',
     quote:
-      'Philippe exceeded all expectations by creating my dream e-commerce website with exceptional professionalism and within a tight time frame.',
+      'Philippe exceeded all expectations by creating my dream e-commerce website with exceptional professionalism and within a tight time frame. His skillful execution and attention to detail have resulted in a stunning, functional site that perfectly aligns with my vision.',
     service: 'Store build or redesign',
     quality: 5,
     communication: 5,

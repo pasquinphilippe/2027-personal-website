@@ -34,8 +34,8 @@ export const meta: Route.MetaFunction = ({data, location}) => {
       : 'Testimonials | Philippe Pasquin Shopify Developer';
   const description =
     language === 'fr'
-      ? 'Besoins marchands recurrents et signaux terrain pour developpement Shopify, nettoyage de theme, integrations, automatisation et support mensuel.'
-      : 'Common merchant needs and working signals for Shopify development, theme cleanup, app integrations, automation, and monthly support.';
+      ? 'Avis publics du Shopify Partner Directory pour Philippe Pasquin: services Shopify, personnalisation de theme, configuration de boutique, pages produits et redesign.'
+      : 'Public Shopify Partner Directory reviews for Philippe Pasquin covering Shopify theme customization, store settings, product and collection setup, and store build work.';
 
   return [
     {title},
@@ -69,6 +69,7 @@ export async function loader({request, context}: Route.LoaderArgs) {
         ? 'Philippe Pasquin developpement Shopify'
         : 'Philippe Pasquin Shopify development',
     url: `${publicConfig.siteUrl.replace(/\/$/, '')}${language === 'fr' ? '/fr' : ''}/testimonials`,
+    sameAs: [reviewSummary.sourceUrl],
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: reviewSummary.rating,

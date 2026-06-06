@@ -646,6 +646,12 @@ export function FeedbackGrid() {
           rating: 'note Shopify Partner Directory',
           reviews: 'avis publics',
           since: 'partenaire depuis decembre',
+          source: 'Source publique',
+          sourceText: `Avis verifies sur ${summary.sourceName}`,
+          sourceCta: 'Voir le profil Shopify',
+          lastVerified: `Verifie le ${summary.lastVerified}`,
+          serviceReviewed: 'Service evalue',
+          dateReviewed: 'Date',
           quality: 'Qualite',
           communication: 'Communication',
           aria: 'Avis 5 etoiles',
@@ -654,6 +660,12 @@ export function FeedbackGrid() {
           rating: 'Shopify Partner Directory rating',
           reviews: 'public reviews',
           since: 'partner since December',
+          source: 'Public source',
+          sourceText: `Verified reviews on ${summary.sourceName}`,
+          sourceCta: 'View Shopify profile',
+          lastVerified: `Verified ${summary.lastVerified}`,
+          serviceReviewed: 'Service reviewed',
+          dateReviewed: 'Date',
           quality: 'Quality',
           communication: 'Communication',
           aria: '5 star review',
@@ -675,6 +687,23 @@ export function FeedbackGrid() {
           <p>{labels.since}</p>
         </div>
       </div>
+      <div className="testimonial-source-bar">
+        <div>
+          <span>{labels.source}</span>
+          <p>
+            {labels.sourceText} / {summary.location} / {summary.languages}
+          </p>
+          <small>{labels.lastVerified}</small>
+        </div>
+        <a
+          className="service-inline-action"
+          href={summary.sourceUrl}
+          rel="noreferrer"
+          target="_blank"
+        >
+          {labels.sourceCta}
+        </a>
+      </div>
       <div className="card-grid two-up testimonial-review-grid">
         {reviews.map((review) => (
           <article className="card quote-card" key={review.author}>
@@ -690,8 +719,13 @@ export function FeedbackGrid() {
             <p>&quot;{review.quote}&quot;</p>
             <div className="gap-m" />
             <div className="testim-author">{review.author}</div>
-            <div className="small-text light">
-              {review.date} / {review.service}
+            <div className="testimonial-review-meta">
+              <span>
+                {labels.serviceReviewed}: {review.service}
+              </span>
+              <time dateTime={review.datePublished}>
+                {labels.dateReviewed}: {review.date}
+              </time>
             </div>
           </article>
         ))}

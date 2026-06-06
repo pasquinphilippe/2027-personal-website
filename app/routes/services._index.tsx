@@ -1,6 +1,6 @@
 import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/services._index';
-import {MerchantWinsTicker} from '~/components/LeanSections';
+import {FeedbackGrid, MerchantWinsTicker} from '~/components/LeanSections';
 import {
   getLanguageFromPathSearch,
   getLanguageFromRequest,
@@ -373,6 +373,9 @@ export default function ServicesOverviewPage() {
           ))}
         </div>
       </section>
+
+      <div className="gap-xl" />
+      <FeedbackGrid />
 
       <div className="gap-xl" />
       <section className="container services-faq-cta">
