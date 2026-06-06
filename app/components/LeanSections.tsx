@@ -97,7 +97,7 @@ export function HomeHero() {
   return (
     <section className="hero-container">
       <div className="gap-xl" />
-      <div className="container">
+      <div className="container wide">
         <div className="hero-proof-callout" role="status">
           <span className="hero-proof-dot" aria-hidden="true" />
           <span>{text.home.proof}</span>
