@@ -121,10 +121,10 @@ export default function AboutPage() {
       <div className="gap-xxl" />
 
       <section className="container about-story">
-        <aside>
+        <div className="about-story-aside">
           <div className="mini-heading">{text.about.date}</div>
           <h2>{storyLabel}</h2>
-        </aside>
+        </div>
         <div className="about-story-copy">
           {text.about.paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>

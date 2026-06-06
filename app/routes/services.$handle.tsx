@@ -152,7 +152,7 @@ export default function ServicePage() {
               </Link>
             </div>
           </div>
-          <aside className="service-fit-panel">
+          <div className="service-fit-panel">
             <div className="service-visual" aria-hidden="true">
               <span>{service.navLabel}</span>
               <strong>{heroInitials}</strong>
@@ -168,7 +168,7 @@ export default function ServicePage() {
                 <p key={item}>{item}</p>
               ))}
             </div>
-          </aside>
+          </div>
         </section>
 
         <section className="container service-split-section">

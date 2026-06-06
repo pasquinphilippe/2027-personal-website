@@ -44,13 +44,13 @@
   border-bottom: var(--border-width) solid var(--border1);
 }
 
-.about-story aside {
+.about-story-aside {
   position: static;
   display: grid;
   gap: var(--gap-s);
 }
 
-.about-story aside h2,
+.about-story-aside h2,
 .about-reference-head h2 {
   font-size: clamp(34px, 4vw, 58px);
   line-height: 1;
@@ -178,10 +178,6 @@
   .about-reference-head,
   .about-operating {
     grid-template-columns: 1fr;
-  }
-
-  .about-story aside {
-    position: static;
   }
 
   .about-reference-grid {
