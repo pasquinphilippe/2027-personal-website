@@ -37,8 +37,19 @@ export function Header(_props: HeaderProps) {
     <header className={`header no-print${isScrolled ? ' is-scrolled' : ''}`}>
       <div className="container">
         <div className="header-inner">
-          <NavLink prefetch="intent" to="/" className="site-wordmark" end>
-            {siteConfig.logo}
+          <NavLink
+            aria-label={`${siteConfig.logo} home`}
+            className="site-wordmark"
+            end
+            prefetch="intent"
+            to="/"
+          >
+            <span className="brand-slash" aria-hidden="true">
+              /
+            </span>
+            <span className="brand-name" aria-hidden="true">
+              pasquin
+            </span>
           </NavLink>
 
           <div className="nav-wrap">
