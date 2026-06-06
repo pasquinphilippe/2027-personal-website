@@ -1,1 +1,1 @@
-export {default, loader, meta} from './services';
+export {default} from './services';
