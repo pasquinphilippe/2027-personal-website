@@ -19,7 +19,19 @@ export function Footer(_props: FooterProps) {
     <footer className="container footer">
       <div className="cols four-up med-gap">
         <div>
-          <div className="mini-heading">{siteConfig.logo}</div>
+          <NavLink
+            aria-label={`${siteConfig.logo} home`}
+            className="footer-wordmark"
+            end
+            to="/"
+          >
+            <span className="brand-slash" aria-hidden="true">
+              /
+            </span>
+            <span className="brand-name" aria-hidden="true">
+              pasquin
+            </span>
+          </NavLink>
           {navItems.map((item) => (
             <NavLink className="footer-link" key={item.href} to={item.href}>
               {item.label}

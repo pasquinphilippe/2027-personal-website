@@ -1848,6 +1848,49 @@ aside main {
   margin-bottom: var(--gap-m);
 }
 
+.footer-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-bottom: var(--gap-m);
+  padding: 4px 10px 4px 4px;
+  border: var(--border-width) solid rgba(43, 43, 37, 0.1);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.66);
+  transition:
+    background var(--transition2),
+    border-color var(--transition2),
+    transform var(--transition2);
+}
+
+.footer-wordmark:hover,
+.footer-wordmark.active {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(43, 43, 37, 0.16);
+  transform: translateY(-1px);
+}
+
+.footer-wordmark .brand-slash {
+  width: 25px;
+  height: 25px;
+  font-size: 16px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 5px 12px rgba(43, 43, 37, 0.1);
+}
+
+.footer-wordmark .brand-name {
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+}
+
+.footer-wordmark .brand-name:after {
+  width: 4px;
+  height: 4px;
+}
+
 .footer-link {
   display: block;
   margin-top: 10px;
