@@ -173,7 +173,7 @@ const pricingDefinitions: PricingDefinition[] = [
     id: 'bank-5',
     handle: 'shopify-5-hour-bank',
     mode: 'one-time',
-    basePriceCad: 875,
+    basePriceCad: 1000,
     hours: 5,
     highlight: true,
     order: 20,
