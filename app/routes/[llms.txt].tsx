@@ -1,24 +1,23 @@
 import type {Route} from './+types/[llms.txt]';
 import {
-  getBankPackages,
   getFaqs,
+  getPartnerReviewSummary,
   getPublicConfig,
-  getRetainerPackages,
   getServices,
   siteConfig,
 } from '~/lib/pasquin';
+import {getPricingProductSummaries} from '~/lib/pricingProducts';
 import {getServicePageSummaries} from '~/lib/servicePages';
 
 export function loader({context}: Route.LoaderArgs) {
   const publicConfig = getPublicConfig(context.env);
   const englishServices = getServices('en');
   const frenchServices = getServices('fr');
-  const englishBankPackages = getBankPackages('en');
-  const frenchBankPackages = getBankPackages('fr');
-  const englishRetainers = getRetainerPackages('en');
-  const frenchRetainers = getRetainerPackages('fr');
+  const englishPricingProducts = getPricingProductSummaries('en');
+  const frenchPricingProducts = getPricingProductSummaries('fr');
   const englishFaqs = getFaqs('en');
   const frenchFaqs = getFaqs('fr');
+  const partnerSummary = getPartnerReviewSummary();
   const baseUrl = publicConfig.siteUrl.replace(/\/$/, '');
   const englishServicePages = getServicePageSummaries('en');
   const frenchServicePages = getServicePageSummaries('fr');
@@ -36,8 +35,13 @@ export function loader({context}: Route.LoaderArgs) {
     '- Primary category: Shopify developer',
     '- Service area: Montreal, Canada, and remote Shopify merchants',
     '- Site style: light, lean, multi-page personal service site inspired by the previous Never Before Seen layout system',
-    '- Primary pages: What We Do, Work, Pricing, About, Testimonials, Contact',
-    '- French pages: /fr, /fr/work, /fr/pricing, /fr/about, /fr/testimonials, /fr/contact',
+    `- Shopify Partner Directory: ${partnerSummary.rating}/5.0 rating from ${partnerSummary.reviewCount} public reviews, partner since ${partnerSummary.partnerSince}`,
+    '- Primary pages: Services, Work, Pricing, About, Testimonials, Contact',
+    '- French pages: /fr, /fr/services, /fr/work, /fr/pricing, /fr/about, /fr/testimonials, /fr/contact',
+    '- Feeds: /sitemap.xml, /services-sitemap.xml, /feed.xml, /llms.txt',
+    ...(siteConfig.socialProfiles.length
+      ? ['- Profiles:', ...siteConfig.socialProfiles.map((url) => `  - ${url}`)]
+      : []),
     '',
     '## Services (English)',
     ...englishServices.map((service) => `- ${service.title}: ${service.text}`),
@@ -57,35 +61,31 @@ export function loader({context}: Route.LoaderArgs) {
         `- ${service.navLabel}: ${baseUrl}/fr${service.href} - ${service.summary}`,
     ),
     '',
-    '## Bank of hours',
-    ...englishBankPackages.map(
+    '## Shopify pricing products (English)',
+    '- Public pricing supports CAD, USD, EUR, and GBP using Shopify service product handles and Shopify Markets when available.',
+    ...englishPricingProducts.map(
       (item) =>
-        `- ${item.name}: ${item.hours}, ${item.price}, ${item.detail}. Best for ${item.bestFor}.`,
+        `- ${item.name} (${item.handle}): ${item.price} ${item.cadence}, ${item.mode}, ${item.hours ? `${item.hours} hour allocation` : 'priced by scope'}. Best for ${item.bestFor}.`,
     ),
     '',
-    "## Banques d'heures",
-    ...frenchBankPackages.map(
+    '## Produits tarifaires Shopify (French)',
+    '- Les tarifs publics supportent CAD, USD, EUR et GBP avec les handles de produits de service Shopify et Shopify Markets quand disponible.',
+    ...frenchPricingProducts.map(
       (item) =>
-        `- ${item.name}: ${item.hours}, ${item.price}, ${item.detail}. Ideal pour ${item.bestFor}.`,
-    ),
-    '',
-    '## Monthly retainers',
-    ...englishRetainers.map(
-      (item) =>
-        `- ${item.name}: ${item.hours}, ${item.price}, ${item.detail}. ${item.rollover}.`,
-    ),
-    '',
-    '## Retainers mensuels',
-    ...frenchRetainers.map(
-      (item) =>
-        `- ${item.name}: ${item.hours}, ${item.price}, ${item.detail}. ${item.rollover}.`,
+        `- ${item.name} (${item.handle}): ${item.price} ${item.cadence}, ${item.mode}, ${item.hours ? `${item.hours} h allouees` : 'tarif selon portee'}. Ideal pour ${item.bestFor}.`,
     ),
     '',
     '## FAQ (English)',
-    ...englishFaqs.flatMap((faq) => [`- Q: ${faq.question}`, `  A: ${faq.answer}`]),
+    ...englishFaqs.flatMap((faq) => [
+      `- Q: ${faq.question}`,
+      `  A: ${faq.answer}`,
+    ]),
     '',
     '## FAQ (French)',
-    ...frenchFaqs.flatMap((faq) => [`- Q: ${faq.question}`, `  A: ${faq.answer}`]),
+    ...frenchFaqs.flatMap((faq) => [
+      `- Q: ${faq.question}`,
+      `  A: ${faq.answer}`,
+    ]),
     '',
     '## Booking',
     'Use the booking section on the website to choose a bank of hours, retainer, or diagnostic call before scheduling.',

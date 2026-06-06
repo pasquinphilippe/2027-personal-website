@@ -21,5 +21,15 @@ declare global {
     PUBLIC_CAL_ORIGIN?: string;
     PUBLIC_CAL_LINK?: string;
     CAL_API_KEY?: string;
+    // Onboarding ("Get started") flow
+    PRIVATE_SHOPIFY_ADMIN_API_TOKEN?: string;
+    ADMIN_API_VERSION?: string;
+    SUPABASE_URL?: string;
+    SUPABASE_SERVICE_ROLE_KEY?: string;
+    SUPABASE_LEADS_TABLE?: string;
+    ANVIL_API_KEY?: string;
+    ANVIL_ETCH_TEMPLATE_EID?: string;
+    // Local/dev only: lets the Pay step proceed without a signed Anvil contract.
+    ALLOW_UNSIGNED_CHECKOUT?: string;
   }
 }

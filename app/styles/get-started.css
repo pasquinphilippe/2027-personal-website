@@ -1,0 +1,155 @@
+.get-started {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+.gs-head {
+  margin-bottom: 2rem;
+}
+
+.gs-steps {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0;
+  margin: 0.75rem 0 1rem;
+}
+
+.gs-steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--muted, #6b6b6b);
+}
+
+.gs-steps li span {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 0.8rem;
+}
+
+.gs-steps li.active {
+  color: var(--ink, #111);
+  font-weight: 600;
+}
+
+.gs-steps li.done {
+  color: #2a7;
+}
+
+.gs-plan {
+  color: var(--muted, #6b6b6b);
+}
+
+.gs-form fieldset {
+  border: 1px solid var(--hairline, #e7e7e7);
+  border-radius: 16px;
+  padding: 1.25rem 1.25rem 1.5rem;
+  margin: 0 0 1.25rem;
+}
+
+.gs-form legend {
+  padding: 0 0.5rem;
+  font-weight: 600;
+}
+
+.gs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .gs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gs-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.gs-label > span {
+  color: var(--muted, #6b6b6b);
+}
+
+.gs-label input,
+.gs-label select,
+.gs-label textarea {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--hairline, #d9d9d9);
+  border-radius: 10px;
+  font: inherit;
+  background: #fff;
+}
+
+.gs-label input[aria-invalid='true'] {
+  border-color: #d33;
+}
+
+.gs-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.gs-check input {
+  margin-top: 0.2rem;
+}
+
+.gs-error {
+  color: #d33;
+  font-size: 0.8rem;
+}
+
+.gs-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.gs-link {
+  color: var(--muted, #6b6b6b);
+  text-decoration: underline;
+}
+
+.gs-intro {
+  color: var(--muted, #6b6b6b);
+  margin-bottom: 1.25rem;
+}
+
+.gs-sign-frame {
+  border: 1px solid var(--hairline, #e7e7e7);
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 1rem 0;
+}
+
+.gs-sign-frame iframe {
+  width: 100%;
+  min-height: 620px;
+  border: 0;
+  display: block;
+}
+
+.gs-notice {
+  padding: 1rem 1.25rem;
+  border: 1px dashed var(--hairline, #cfcfcf);
+  border-radius: 12px;
+  color: var(--muted, #6b6b6b);
+  background: #faf9f7;
+}

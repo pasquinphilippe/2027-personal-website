@@ -1,1 +1,1 @@
-export {default, meta} from './pricing';
+export {default, loader, meta} from './pricing';
