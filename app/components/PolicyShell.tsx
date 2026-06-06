@@ -29,39 +29,36 @@ export function PolicyShell({
 
   return (
     <>
-      <section className="policy-hero">
-        <div className="gap-xl" />
-        <div className="container">
+      <section className="container policy-page">
+        <header className="policy-header">
           <div className="policy-meta-row">
-            <div className="hero-proof-callout">{eyebrow}</div>
-            <div className="small-text light">
+            <span className="hero-proof-callout">{eyebrow}</span>
+            <span className="small-text light">
               {updatedLabel} {updated}
-            </div>
+            </span>
           </div>
-          <div className="gap-l" />
-          <div className="hero-text-wrap policy-hero-wrap">
+          <div className="policy-heading-grid">
             <h1>{title}</h1>
             <p className="subtitle light">{description}</p>
           </div>
-        </div>
-        <div className="gap-xl" />
-      </section>
 
-      <section className="container policy-layout">
-        <aside className="policy-sidebar" aria-label={legalAriaLabel}>
-          <div className="mini-heading">{legalHeading}</div>
-          {legalNavItems.map((item) => (
-            <NavLink
-              className="policy-nav-link"
-              key={item.href}
-              to={getLocalizedHref(item.href, language)}
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </aside>
+          <div className="policy-nav-bar">
+            <span className="mini-heading">{legalHeading}</span>
+            <nav className="policy-nav" aria-label={legalAriaLabel}>
+              {legalNavItems.map((item) => (
+                <NavLink
+                  className="policy-nav-link"
+                  key={item.href}
+                  to={getLocalizedHref(item.href, language)}
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
+        </header>
 
-        <div className="policy-content">
+        <article className="policy-content">
           {children}
           <div className="policy-contact">
             <span>{questionsLabel}</span>
@@ -69,7 +66,7 @@ export function PolicyShell({
               {siteConfig.defaultContactEmail}
             </a>
           </div>
-        </div>
+        </article>
       </section>
 
       <div className="gap-xxl" />
