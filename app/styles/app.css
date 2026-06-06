@@ -516,15 +516,45 @@ aside main {
   position: sticky;
   top: 0;
   z-index: 25;
+  transition: transform var(--transition2);
 }
 
 .header-inner {
   position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: var(--gap-m) 0;
+}
+
+.header-inner:before {
+  content: "";
+  position: absolute;
+  inset: 8px -12px;
+  z-index: 0;
+  pointer-events: none;
+  border: var(--border-width) solid rgba(255, 255, 255, 0.58);
+  border-radius: 999px;
+  background: rgba(247, 247, 247, 0.72);
+  opacity: 0;
+  box-shadow:
+    0 18px 44px rgba(43, 43, 37, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(18px) saturate(1.18);
+  -webkit-backdrop-filter: blur(18px) saturate(1.18);
+  transform: translateY(-6px) scale(0.985);
+  transition:
+    opacity var(--transition2),
+    transform var(--transition2),
+    background var(--transition2),
+    border-color var(--transition2);
+}
+
+.header.is-scrolled .header-inner:before {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .site-wordmark,
@@ -562,6 +592,7 @@ aside main {
 .nav-wrap {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;

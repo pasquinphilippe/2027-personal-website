@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import {NavLink} from 'react-router';
 import type {CartApiQueryFragment, HeaderQuery} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
@@ -20,8 +21,20 @@ interface HeaderProps {
 type Viewport = 'desktop' | 'mobile';
 
 export function Header(_props: HeaderProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    function updateHeaderState() {
+      setIsScrolled(window.scrollY > 12);
+    }
+
+    updateHeaderState();
+    window.addEventListener('scroll', updateHeaderState, {passive: true});
+    return () => window.removeEventListener('scroll', updateHeaderState);
+  }, []);
+
   return (
-    <header className="header no-print">
+    <header className={`header no-print${isScrolled ? ' is-scrolled' : ''}`}>
       <div className="container">
         <div className="header-inner">
           <NavLink prefetch="intent" to="/" className="site-wordmark" end>
