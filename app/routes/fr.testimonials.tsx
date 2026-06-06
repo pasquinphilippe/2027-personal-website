@@ -1,1 +1,1 @@
-export {default, meta} from './testimonials';
+export {default, meta, loader} from './testimonials';

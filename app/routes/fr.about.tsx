@@ -1,1 +1,1 @@
-export {default, meta} from './about';
+export {default, loader, meta} from './about';

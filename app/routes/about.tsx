@@ -3,35 +3,68 @@ import {
   CtaSection,
   MerchantWinsTicker,
   PageIntro,
+  ProjectImage,
 } from '~/components/LeanSections';
 import {
   getProcessSteps,
+  getPublicConfig,
   getServices,
   getSiteText,
   getWorkItems,
   siteConfig,
 } from '~/lib/pasquin';
-import {getLanguageFromPathSearch, useSelectedLanguage} from '~/lib/i18n';
+import {
+  getLanguageFromPathSearch,
+  getLanguageFromRequest,
+  getLocalizedUrl,
+  useSelectedLanguage,
+} from '~/lib/i18n';
 
-export const meta: Route.MetaFunction = ({location}) => {
-  const language = getLanguageFromPathSearch(location.pathname, location.search);
+const ABOUT_REFERENCE_IMAGE_SIZES =
+  '(max-width: 800px) calc(100vw - 56px), (max-width: 1220px) calc((100vw - 124px) / 3), 325px';
+
+export const meta: Route.MetaFunction = ({data, location}) => {
+  const language =
+    data?.language ?? getLanguageFromPathSearch(location.pathname, location.search);
+  const siteUrl = data?.publicConfig?.siteUrl || siteConfig.defaultSiteUrl;
+  const title =
+    language === 'fr'
+      ? 'A propos | Philippe Pasquin Developpeur Shopify'
+      : 'About | Philippe Pasquin Shopify Developer';
+  const description =
+    language === 'fr'
+      ? 'A propos de Philippe Pasquin, developpeur Shopify base a Montreal pour storefronts, apps, automatisation, performance et support.'
+      : 'About Philippe Pasquin, a Montreal-based Shopify developer helping merchants improve storefronts, apps, automation, performance, and support workflows.';
+  const canonical = getLocalizedUrl(siteUrl, '/about', language);
+  const alternateEn = getLocalizedUrl(siteUrl, '/about', 'en');
+  const alternateFr = getLocalizedUrl(siteUrl, '/about', 'fr');
+  const ogImage = `${siteUrl.replace(/\/$/, '')}${siteConfig.ogImagePath}`;
 
   return [
-    {
-      title:
-        language === 'fr'
-          ? 'A propos | Philippe Pasquin Developpeur Shopify'
-          : 'About | Philippe Pasquin Shopify Developer',
-    },
-    {
-      name: 'description',
-      content:
-        language === 'fr'
-          ? 'A propos de Philippe Pasquin, developpeur Shopify base a Montreal pour storefronts, apps, automatisation, performance et support.'
-          : 'About Philippe Pasquin, a Montreal-based Shopify developer helping merchants improve storefronts, apps, automation, performance, and support workflows.',
-    },
+    {title},
+    {name: 'description', content: description},
+    {tagName: 'link', rel: 'canonical', href: canonical},
+    {tagName: 'link', rel: 'alternate', hrefLang: 'en-CA', href: alternateEn},
+    {tagName: 'link', rel: 'alternate', hrefLang: 'fr-CA', href: alternateFr},
+    {property: 'og:title', content: title},
+    {property: 'og:description', content: description},
+    {property: 'og:type', content: 'profile'},
+    {property: 'og:url', content: canonical},
+    {property: 'og:image', content: ogImage},
+    {property: 'og:locale', content: language === 'fr' ? 'fr_CA' : 'en_CA'},
+    {name: 'twitter:card', content: 'summary_large_image'},
+    {name: 'twitter:title', content: title},
+    {name: 'twitter:description', content: description},
+    {name: 'twitter:image', content: ogImage},
   ];
 };
+
+export async function loader({context, request}: Route.LoaderArgs) {
+  return {
+    language: getLanguageFromRequest(request),
+    publicConfig: getPublicConfig(context.env),
+  };
+}
 
 export default function AboutPage() {
   const language = useSelectedLanguage();
@@ -120,13 +153,11 @@ export default function AboutPage() {
               rel="noreferrer"
               target="_blank"
             >
-              <img
-                src={item.image}
+              <ProjectImage
+                item={item}
                 alt={`${item.title} Shopify project screenshot`}
-                width={1440}
-                height={935}
+                sizes={ABOUT_REFERENCE_IMAGE_SIZES}
                 loading="lazy"
-                decoding="async"
               />
               <span>{item.title}</span>
             </a>

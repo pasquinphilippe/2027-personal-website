@@ -6,10 +6,10 @@ import {
   getMoreNavItems,
   getNavItems,
   getPrimaryNavItems,
-  getServices,
   getSiteText,
   siteConfig,
 } from '~/lib/pasquin';
+import {getServicePageSummaries} from '~/lib/servicePages';
 import {
   getLanguageHref,
   getLocalizedHref,
@@ -125,40 +125,31 @@ export function HeaderMenu({
   const language = useSelectedLanguage();
   const text = getSiteText(language);
   const navItems = getNavItems(language);
-  const services = getServices(language);
+  const services = getServicePageSummaries(language, 'services');
 
   return (
     <nav className={`header-menu-${viewport}`} aria-label={`${viewport} navigation`}>
-      <NavLink
-        end
-        onClick={close}
-        prefetch="intent"
-        to={getLocalizedHref('/', language)}
-      >
-        {text.nav.whatWeDo}
-      </NavLink>
-      {navItems
-        .filter((item) => item.href !== '/')
-        .map((item) => (
-          <NavLink
-            key={item.href}
-            onClick={close}
-            prefetch="intent"
-            to={getLocalizedHref(item.href, language)}
-          >
-            {item.label}
-          </NavLink>
-        ))}
+      {navItems.map((item) => (
+        <NavLink
+          key={item.href}
+          onClick={close}
+          prefetch="intent"
+          to={getLocalizedHref(item.href, language)}
+        >
+          {item.label}
+        </NavLink>
+      ))}
       <div className="mobile-menu-services">
         <span>{text.nav.services}</span>
         {services.map((service) => (
-          <a
-            href={getLocalizedHref('/#services', language)}
-            key={service.title}
+          <NavLink
+            key={service.slug}
             onClick={close}
+            prefetch="intent"
+            to={getLocalizedHref(service.href, language)}
           >
-            {service.title}
-          </a>
+            {service.navLabel}
+          </NavLink>
         ))}
       </div>
       <div className="mobile-menu-tools">

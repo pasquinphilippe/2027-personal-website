@@ -77,7 +77,7 @@ export default function Homepage() {
       <div className="gap-xxl" />
       <LogoGrid />
       <div className="gap-xxl" />
-      <WorkGrid limit={8} />
+      <WorkGrid variant="index" />
       <div className="gap-xxl" />
       <FeedbackFeature />
       <div className="gap-xxl" />

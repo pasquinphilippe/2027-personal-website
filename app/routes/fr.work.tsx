@@ -1,1 +1,1 @@
-export {default, meta} from './work';
+export {default, loader, meta} from './work';

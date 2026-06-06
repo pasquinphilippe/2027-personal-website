@@ -25,6 +25,9 @@ export function PageLayout({
 }: PageLayoutProps) {
   return (
     <Aside.Provider>
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
       <MobileMenuAside
         header={header}
         isLoggedIn={isLoggedIn}
@@ -37,7 +40,7 @@ export function PageLayout({
           publicStoreDomain={publicStoreDomain}
         />
       )}
-      <main>{children}</main>
+      <main id="main">{children}</main>
       <Footer
         footer={footer}
         header={header}

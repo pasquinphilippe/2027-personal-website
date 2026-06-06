@@ -3,9 +3,10 @@ import {Link} from 'react-router';
 import type {ReactNode} from 'react';
 import {
   getBankPackages,
-  getFeedbackNotes,
   getLogoGridItems,
   getMerchantWins,
+  getPartnerReviews,
+  getPartnerReviewSummary,
   getProcessSteps,
   getRetainerPackages,
   getServices,
@@ -14,6 +15,18 @@ import {
   getWorkItems,
 } from '~/lib/pasquin';
 import {getLocalizedHref, useSelectedLanguage} from '~/lib/i18n';
+
+type WorkItem = ReturnType<typeof getWorkItems>[number];
+
+const PROJECT_IMAGE_WIDTHS = [640, 960, 1440] as const;
+const GRID_PROJECT_IMAGE_SIZES =
+  '(max-width: 800px) calc(100vw - 56px), (max-width: 1280px) calc((100vw - 112px) / 2), 594px';
+const SLIDER_PROJECT_IMAGE_SIZES =
+  '(max-width: 700px) calc(100vw - 56px), min(940px, calc(100vw - 80px))';
+const INDEX_PROJECT_IMAGE_SIZES =
+  '(max-width: 700px) calc(100vw - 56px), min(860px, 62vw)';
+const TESTIMONIAL_PROJECT_IMAGE_SIZES =
+  '(max-width: 760px) calc(100vw - 56px), min(560px, 46vw)';
 
 export function PageIntro({
   eyebrow,
@@ -58,6 +71,23 @@ export function PageIntro({
 export function HomeHero() {
   const language = useSelectedLanguage();
   const text = getSiteText(language);
+  const reviewSummary = getPartnerReviewSummary();
+  const trustSignals =
+    language === 'fr'
+      ? [
+          'Shopify Partner Directory',
+          `${reviewSummary.rating} / 5,0`,
+          `${reviewSummary.reviewCount} avis`,
+          'Partenaire depuis decembre 2021',
+          'Montreal / EN + FR',
+        ]
+      : [
+          'Shopify Partner Directory',
+          `${reviewSummary.rating} / 5.0`,
+          `${reviewSummary.reviewCount} reviews`,
+          `Partner since ${reviewSummary.partnerSince}`,
+          'Montreal / EN + FR',
+        ];
 
   return (
     <section className="hero-container">
@@ -76,6 +106,17 @@ export function HomeHero() {
             </Link>
           </div>
         </div>
+        <div className="hero-trust-row" aria-label="Shopify Partner trust signals">
+          {trustSignals.map((signal, index) => (
+            <span
+              className={index === 0 ? 'hero-trust-badge shopify' : 'hero-trust-badge'}
+              key={signal}
+            >
+              {index === 0 ? <span aria-hidden="true">S</span> : null}
+              {signal}
+            </span>
+          ))}
+        </div>
       </div>
       <div className="gap-xxl" />
     </section>
@@ -91,9 +132,13 @@ export function FeaturedWork() {
     <section aria-label={text.home.featuredWorkAria} className="work-slider">
       <div className="work-slider-viewport">
         <div className="work-slider-track">
-          {workItems.slice(0, 6).map((item) => (
+          {workItems.slice(0, 6).map((item, index) => (
             <div className="work-slider-slide" key={item.slug}>
-              <ProjectCover item={item} />
+              <ProjectCover
+                item={item}
+                imageSizes={SLIDER_PROJECT_IMAGE_SIZES}
+                priority={index === 0}
+              />
             </div>
           ))}
         </div>
@@ -151,11 +196,50 @@ export function LogoGrid() {
   );
 }
 
-export function WorkGrid({limit}: {limit?: number}) {
+export function WorkGrid({
+  limit,
+  variant = 'grid',
+}: {
+  limit?: number;
+  variant?: 'grid' | 'index';
+}) {
   const language = useSelectedLanguage();
   const text = getSiteText(language);
   const workItems = getWorkItems(language);
   const items = typeof limit === 'number' ? workItems.slice(0, limit) : workItems;
+
+  if (variant === 'index') {
+    return (
+      <ProjectIndex
+        ariaLabel={text.home.featuredWorkAria}
+        items={items}
+        language={language}
+      />
+    );
+  }
+
+  return (
+    <section className="container wide work-grid-section">
+      <div className="project-grid">
+        <div className="cols two-up med-gap">
+          {items.map((item) => (
+            <ProjectCover item={item} key={item.slug} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProjectIndex({
+  ariaLabel,
+  items,
+  language,
+}: {
+  ariaLabel: string;
+  items: WorkItem[];
+  language: ReturnType<typeof useSelectedLanguage>;
+}) {
   const [activeSlug, setActiveSlug] = useState(items[0]?.slug ?? '');
   const activeItem = items.find((item) => item.slug === activeSlug) ?? items[0];
 
@@ -163,7 +247,7 @@ export function WorkGrid({limit}: {limit?: number}) {
 
   return (
     <section className="container wide project-index-section">
-      <div className="project-index" aria-label={text.home.featuredWorkAria}>
+      <div className="project-index" aria-label={ariaLabel}>
         <div className="project-index-list">
           {items.map((item, index) => {
             const isActive = item.slug === activeItem.slug;
@@ -198,13 +282,18 @@ function ProjectIndexPreview({
   item,
   language,
 }: {
-  item: ReturnType<typeof getWorkItems>[number];
+  item: WorkItem;
   language: ReturnType<typeof useSelectedLanguage>;
 }) {
   const initials = getProjectInitials(item.title);
   const preview = (
     <>
-      <img src={item.image} alt={`${item.title} website screenshot`} loading="lazy" />
+      <ProjectImage
+        item={item}
+        alt={`${item.title} website screenshot`}
+        sizes={INDEX_PROJECT_IMAGE_SIZES}
+        loading="lazy"
+      />
       <span className="project-index-preview-mark" aria-hidden="true">
         {initials}
       </span>
@@ -238,17 +327,27 @@ function ProjectIndexPreview({
   );
 }
 
-function ProjectCover({item}: {item: ReturnType<typeof getWorkItems>[number]}) {
+function ProjectCover({
+  item,
+  imageSizes = GRID_PROJECT_IMAGE_SIZES,
+  priority = false,
+}: {
+  item: WorkItem;
+  imageSizes?: string;
+  priority?: boolean;
+}) {
   const language = useSelectedLanguage();
   const initials = getProjectInitials(item.title);
 
   const cover = (
     <>
       <div className="project-grid-cover">
-        <img
-          src={item.image}
+        <ProjectImage
+          item={item}
           alt={`${item.title} website screenshot`}
-          loading="lazy"
+          sizes={imageSizes}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : undefined}
         />
         <div className="project-card-overlay">
           <div className="project-card-overlay-shade" />
@@ -297,6 +396,47 @@ function ProjectCover({item}: {item: ReturnType<typeof getWorkItems>[number]}) {
       {cover}
     </Link>
   );
+}
+
+export function ProjectImage({
+  item,
+  alt,
+  sizes,
+  loading,
+  fetchPriority,
+}: {
+  item: WorkItem;
+  alt: string;
+  sizes: string;
+  loading: 'lazy' | 'eager';
+  fetchPriority?: 'high' | 'low' | 'auto';
+}) {
+  const webpSrcSet = PROJECT_IMAGE_WIDTHS.map(
+    (width) => `${getProjectWebpImage(item.image, width)} ${width}w`,
+  ).join(', ');
+
+  const fetchPriorityProps = fetchPriority
+    ? ({fetchpriority: fetchPriority} as Record<string, string>)
+    : {};
+
+  return (
+    <picture>
+      <source sizes={sizes} srcSet={webpSrcSet} type="image/webp" />
+      <img
+        src={item.image}
+        alt={alt}
+        width={1440}
+        height={935}
+        loading={loading}
+        decoding="async"
+        {...fetchPriorityProps}
+      />
+    </picture>
+  );
+}
+
+function getProjectWebpImage(image: string, width: number) {
+  return image.replace(/\.jpg$/, `-${width}.webp`);
 }
 
 function getProjectInitials(title: string) {
@@ -450,9 +590,9 @@ export function ProcessList() {
 export function FeedbackFeature() {
   const language = useSelectedLanguage();
   const text = getSiteText(language);
-  const feedbackNotes = getFeedbackNotes(language);
+  const reviews = getPartnerReviews();
   const workItems = getWorkItems(language);
-  const note = feedbackNotes[0];
+  const review = reviews[2] ?? reviews[0];
 
   return (
     <section className="container testimonial-container">
@@ -461,13 +601,27 @@ export function FeedbackFeature() {
           <div className="testim-left">
             <div className="mini-heading">{text.feedback.workingSignal}</div>
             <div className="gap-m" />
-            <h2 className="h3">&quot;{note.quote}&quot;</h2>
+            <h2 className="h3">&quot;{review.quote}&quot;</h2>
             <div className="gap-l" />
-            <div className="testim-author">{note.author}</div>
-            <div className="small-text light">{note.role}</div>
+            <div className="testim-author">{review.author}</div>
+            <div className="small-text light">{review.service}</div>
           </div>
           <div className="testim-right" aria-hidden="true">
-            <img src={workItems[0].image} alt="" loading="lazy" />
+            <div className="testim-browser-frame">
+              <div className="testim-browser-bar">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="testim-browser-screen">
+                <ProjectImage
+                  item={workItems[0]}
+                  alt=""
+                  sizes={TESTIMONIAL_PROJECT_IMAGE_SIZES}
+                  loading="lazy"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -477,17 +631,61 @@ export function FeedbackFeature() {
 
 export function FeedbackGrid() {
   const language = useSelectedLanguage();
-  const feedbackNotes = getFeedbackNotes(language);
+  const reviews = getPartnerReviews();
+  const summary = getPartnerReviewSummary();
+  const labels =
+    language === 'fr'
+      ? {
+          rating: 'note Shopify Partner Directory',
+          reviews: 'avis publics',
+          since: 'partenaire depuis decembre',
+          quality: 'Qualite',
+          communication: 'Communication',
+          aria: 'Avis 5 etoiles',
+        }
+      : {
+          rating: 'Shopify Partner Directory rating',
+          reviews: 'public reviews',
+          since: 'partner since December',
+          quality: 'Quality',
+          communication: 'Communication',
+          aria: '5 star review',
+        };
 
   return (
     <section className="container">
-      <div className="card-grid two-up">
-        {feedbackNotes.map((note) => (
-          <article className="card quote-card" key={note.quote}>
-            <p>&quot;{note.quote}&quot;</p>
+      <div className="testimonial-proof-strip">
+        <div>
+          <span>{summary.rating}</span>
+          <p>{labels.rating}</p>
+        </div>
+        <div>
+          <span>{summary.reviewCount}</span>
+          <p>{labels.reviews}</p>
+        </div>
+        <div>
+          <span>2021</span>
+          <p>{labels.since}</p>
+        </div>
+      </div>
+      <div className="card-grid two-up testimonial-review-grid">
+        {reviews.map((review) => (
+          <article className="card quote-card" key={review.author}>
+            <div className="review-score-row" aria-label={labels.aria}>
+              <span>5.0</span>
+              <span>
+                {labels.quality} {review.quality}
+              </span>
+              <span>
+                {labels.communication} {review.communication}
+              </span>
+            </div>
+            <p>&quot;{review.quote}&quot;</p>
             <div className="gap-m" />
-            <div className="testim-author">{note.author}</div>
-            <div className="small-text light">{note.role}</div>
+            <div className="testim-author">{review.author}</div>
+            <div className="small-text light">
+              {review.date} / {review.service}
+            </div>
           </article>
         ))}
       </div>

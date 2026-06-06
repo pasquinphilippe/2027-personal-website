@@ -14,7 +14,23 @@ export const siteConfig = {
     city: 'Montreal',
     region: 'Quebec',
     country: 'Canada',
+    geo: {
+      latitude: 45.5019,
+      longitude: -73.5674,
+    },
   },
+  socialProfiles: [
+    'https://www.linkedin.com/in/philippepasquin/',
+    'https://github.com/philippepasquin',
+  ],
+  logoImagePath: '/og-image.svg',
+  ogImagePath: '/og-image.svg',
+  openingHours: {
+    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '09:00',
+    closes: '18:00',
+  },
+  priceRange: '$$',
 };
 
 export function getPublicConfig(env?: Env) {
@@ -28,7 +44,7 @@ export function getPublicConfig(env?: Env) {
 }
 
 export const primaryNavItems = [
-  {label: 'What We Do', href: '/'},
+  {label: 'What We Do', href: '/services'},
   {label: 'Our Work', href: '/work'},
   {label: 'Pricing', href: '/pricing'},
   {label: 'About', href: '/about'},
@@ -43,7 +59,7 @@ export const contactNavItem = {label: 'Contact', href: '/contact'};
 export const navItems = [...primaryNavItems, ...moreNavItems, contactNavItem];
 
 const primaryNavItemsFr = [
-  {label: 'Services', href: '/'},
+  {label: 'Services', href: '/services'},
   {label: 'Projets', href: '/work'},
   {label: 'Tarifs', href: '/pricing'},
   {label: 'A propos', href: '/about'},
@@ -124,9 +140,9 @@ export const siteText = {
       aboutIntro:
         'A Montreal-based Shopify developer helping merchants move faster without turning every storefront change into a heavy agency project.',
       testimonialsTitle: 'Testimonials',
-      testimonialsEyebrow: 'Working signals',
+      testimonialsEyebrow: 'Shopify Partner reviews',
       testimonialsIntro:
-        'Real client quotes can be added here when ready. For now, this page keeps the old-site testimonial layout while documenting the recurring merchant situations this service is built for.',
+        'Public reviews from the Shopify Partner Directory, paired with the kind of Shopify work each merchant needed.',
       contactTitle: "Let's make the store easier to run.",
       contactEyebrow: 'Contact',
       contactIntro:
@@ -254,9 +270,9 @@ export const siteText = {
       aboutIntro:
         "Developpeur Shopify base a Montreal, j’aide les marchands a avancer plus vite sans transformer chaque changement storefront en gros projet d’agence.",
       testimonialsTitle: 'Temoignages',
-      testimonialsEyebrow: 'Signaux terrain',
+      testimonialsEyebrow: 'Avis Shopify Partner',
       testimonialsIntro:
-        "Les citations clients pourront etre ajoutees ici quand elles seront pretes. Pour l’instant, cette page garde la structure temoignage de l'ancien site et documente les situations marchandes recurrentes que ce service adresse.",
+        'Avis publics du Shopify Partner Directory, relies au type de travail Shopify dont chaque marchand avait besoin.',
       contactTitle: 'Rendons la boutique plus facile a operer.',
       contactEyebrow: 'Contact',
       contactIntro:
@@ -645,6 +661,56 @@ export const feedbackNotes = [
       'The apps, analytics, and cart all touch each other. We need someone who can trace the whole flow.',
     author: 'Common merchant need',
     role: 'Before integration work',
+  },
+];
+
+export const partnerReviewSummary = {
+  rating: '5.0',
+  reviewCount: 4,
+  partnerSince: 'December 2021',
+  sourceName: 'Shopify Partner Directory',
+  sourceUrl: 'https://www.shopify.com/partners/directory/partner/philippe-pasquin',
+  priceRange: 'Starting from $150',
+};
+
+export const partnerReviews = [
+  {
+    author: 'Redcallas',
+    date: 'Dec 19, 2024',
+    datePublished: '2024-12-19',
+    quote: 'Philippe did a great work for us considering the last minute request.',
+    service: 'Theme customization',
+    quality: 5,
+    communication: 5,
+  },
+  {
+    author: 'MysTea',
+    date: 'Oct 15, 2024',
+    datePublished: '2024-10-15',
+    quote: 'Super et proactif!',
+    service: 'Store settings configuration',
+    quality: 5,
+    communication: 5,
+  },
+  {
+    author: 'Sportive Plus',
+    date: 'Oct 9, 2024',
+    datePublished: '2024-10-09',
+    quote:
+      "Changes the theme and reorganizes our presentation and product's pages. Very knowledgeable and very cooperative.",
+    service: 'Product and collection setup',
+    quality: 5,
+    communication: 5,
+  },
+  {
+    author: 'GoodMood Creations',
+    date: 'Jun 10, 2024',
+    datePublished: '2024-06-10',
+    quote:
+      'Philippe exceeded all expectations by creating my dream e-commerce website with exceptional professionalism and within a tight time frame.',
+    service: 'Store build or redesign',
+    quality: 5,
+    communication: 5,
   },
 ];
 
@@ -1071,6 +1137,14 @@ export function getFeedbackNotes(language: LanguageCode = 'en') {
   return language === 'fr' ? feedbackNotesFr : feedbackNotes;
 }
 
+export function getPartnerReviewSummary() {
+  return partnerReviewSummary;
+}
+
+export function getPartnerReviews() {
+  return partnerReviews;
+}
+
 export function getMerchantWins(language: LanguageCode = 'en') {
   return language === 'fr' ? merchantWinsFr : merchantWins;
 }
@@ -1098,6 +1172,16 @@ export function buildStructuredData({
   const localizedRetainerPackages = getRetainerPackages(language);
   const localizedFaqs = getFaqs(language);
 
+  const businessName =
+    language === 'fr'
+      ? `${siteConfig.name} — Developpement Shopify`
+      : `${siteConfig.name} Shopify Development`;
+  const businessDescription =
+    language === 'fr'
+      ? 'Philippe Pasquin est un developpeur Shopify base a Montreal qui aide les marchands a ameliorer storefronts, themes, integrations, operations et maintenabilite.'
+      : 'Philippe Pasquin is a Montreal-based Shopify developer helping merchants improve storefronts, themes, integrations, operations, and maintainability.';
+  const logoUrl = `${siteUrl}${siteConfig.logoImagePath}`;
+
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -1105,28 +1189,41 @@ export function buildStructuredData({
         '@type': 'WebSite',
         '@id': `${siteUrl}/#website`,
         url: siteUrl,
-        name: `${siteConfig.name} Shopify Development`,
+        name: businessName,
         description: text.pages.homeDescription,
         publisher: {'@id': `${siteUrl}/#person`},
         inLanguage: language === 'fr' ? 'fr-CA' : 'en-CA',
+        image: logoUrl,
       },
       {
-        '@type': ['Person', 'ProfessionalService'],
+        '@type': ['Person', 'ProfessionalService', 'LocalBusiness'],
         '@id': `${siteUrl}/#person`,
         name: siteConfig.name,
         alternateName: siteConfig.logo,
         url: siteUrl,
         email: contactEmail,
+        image: logoUrl,
+        logo: logoUrl,
+        priceRange: siteConfig.priceRange,
         jobTitle: language === 'fr' ? 'Developpeur Shopify' : 'Shopify Developer',
-        description:
-          language === 'fr'
-            ? 'Philippe Pasquin est un developpeur Shopify base a Montreal qui aide les marchands a ameliorer storefronts, themes, integrations, operations et maintenabilite.'
-            : 'Philippe Pasquin is a Montreal-based Shopify developer helping merchants improve storefronts, themes, integrations, operations, and maintainability.',
+        description: businessDescription,
+        sameAs: siteConfig.socialProfiles,
         address: {
           '@type': 'PostalAddress',
           addressLocality: siteConfig.location.city,
           addressRegion: siteConfig.location.region,
           addressCountry: siteConfig.location.country,
+        },
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: siteConfig.location.geo.latitude,
+          longitude: siteConfig.location.geo.longitude,
+        },
+        openingHoursSpecification: {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: siteConfig.openingHours.days,
+          opens: siteConfig.openingHours.opens,
+          closes: siteConfig.openingHours.closes,
         },
         areaServed: [
           {'@type': 'City', name: 'Montreal'},

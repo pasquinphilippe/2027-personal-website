@@ -1,6 +1,7 @@
 import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/services.$handle';
 import {CtaSection, MerchantWinsTicker} from '~/components/LeanSections';
+import {Breadcrumbs} from '~/components/Breadcrumbs';
 import {getLanguageFromRequest, getLocalizedHref, getLocalizedUrl} from '~/lib/i18n';
 import {getPublicConfig, siteConfig} from '~/lib/pasquin';
 import {
@@ -29,6 +30,7 @@ export const meta: Route.MetaFunction = ({data, location}) => {
   const canonical = getLocalizedUrl(siteUrl, `/services/${service.slug}`, language);
   const alternateEn = getLocalizedUrl(siteUrl, `/services/${service.slug}`, 'en');
   const alternateFr = getLocalizedUrl(siteUrl, `/services/${service.slug}`, 'fr');
+  const ogImage = `${siteUrl.replace(/\/$/, '')}/og/services/${service.slug}.svg`;
 
   return [
     {title: service.metaTitle},
@@ -41,10 +43,12 @@ export const meta: Route.MetaFunction = ({data, location}) => {
     {property: 'og:description', content: service.metaDescription},
     {property: 'og:type', content: 'website'},
     {property: 'og:url', content: canonical},
+    {property: 'og:image', content: ogImage},
     {property: 'og:locale', content: language === 'fr' ? 'fr_CA' : 'en_CA'},
-    {name: 'twitter:card', content: 'summary'},
+    {name: 'twitter:card', content: 'summary_large_image'},
     {name: 'twitter:title', content: service.metaTitle},
     {name: 'twitter:description', content: service.metaDescription},
+    {name: 'twitter:image', content: ogImage},
   ];
 };
 
@@ -75,11 +79,16 @@ export async function loader({params, request, context}: Route.LoaderArgs) {
 }
 
 export default function ServicePage() {
-  const {language, service, references, relatedServices, structuredData} =
+  const {language, service, references, relatedServices, structuredData, publicConfig} =
     useLoaderData<typeof loader>();
   const pricingHref = getLocalizedHref('/pricing', language);
   const contactHref = getLocalizedHref('/contact', language);
   const workHref = getLocalizedHref('/work', language);
+  const breadcrumbItems = [
+    {label: language === 'fr' ? 'Accueil' : 'Home', href: '/'},
+    {label: language === 'fr' ? 'Services' : 'Services', href: '/services'},
+    {label: service.navLabel || service.title, href: `/services/${service.slug}`},
+  ];
   const labels =
     language === 'fr'
       ? {
@@ -92,6 +101,7 @@ export default function ServicePage() {
           process: 'Processus',
           faq: 'FAQ',
           related: 'Services lies',
+          workLink: 'Parcourir les projets',
         }
       : {
           overview: 'Quick view',
@@ -103,13 +113,21 @@ export default function ServicePage() {
           process: 'Process',
           faq: 'FAQ',
           related: 'Related services',
+          workLink: 'Browse selected work',
         };
+  const heroInitials = getServiceInitials(service.navLabel || service.title);
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{__html: JSON.stringify(structuredData)}}
+      />
+      <Breadcrumbs
+        items={breadcrumbItems}
+        language={language}
+        siteUrl={publicConfig.siteUrl}
+        emitJsonLd={false}
       />
       <article className="service-page">
         <section className="container service-hero">
@@ -135,6 +153,15 @@ export default function ServicePage() {
             </div>
           </div>
           <aside className="service-fit-panel">
+            <div className="service-visual" aria-hidden="true">
+              <span>{service.navLabel}</span>
+              <strong>{heroInitials}</strong>
+              <div className="service-visual-lines">
+                {service.heroPoints.slice(0, 3).map((point) => (
+                  <i key={point}>{point}</i>
+                ))}
+              </div>
+            </div>
             <div className="mini-heading">{service.fitHeading}</div>
             <div className="service-fit-list">
               {service.fit.map((item) => (
@@ -198,9 +225,14 @@ export default function ServicePage() {
         </section>
 
         <section className="container service-detail-section">
-          <div className="service-section-heading">
-            <div className="mini-heading">{labels.references}</div>
-            <h2>{service.referencesTitle}</h2>
+          <div className="service-section-heading with-action">
+            <div>
+              <div className="mini-heading">{labels.references}</div>
+              <h2>{service.referencesTitle}</h2>
+            </div>
+            <Link className="service-inline-action" to={workHref}>
+              {labels.workLink}
+            </Link>
           </div>
           <div className="card-grid three-up">
             {references.map((item) => (
@@ -223,11 +255,6 @@ export default function ServicePage() {
                 </div>
               </a>
             ))}
-          </div>
-          <div className="service-text-link">
-            <Link className="feat-link" to={workHref}>
-              {language === 'fr' ? 'Voir tous les projets ->' : 'View all work ->'}
-            </Link>
           </div>
         </section>
 
@@ -296,4 +323,14 @@ export default function ServicePage() {
       </article>
     </>
   );
+}
+
+function getServiceInitials(label: string) {
+  return label
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase();
 }

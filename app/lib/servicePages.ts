@@ -1977,8 +1977,14 @@ export function buildServiceStructuredData({
           {
             '@type': 'ListItem',
             position: 2,
-            name: language === 'fr' ? 'Services' : 'Services',
-            item: `${baseUrl}${language === 'fr' ? '/fr' : ''}/services/${service.slug}`,
+            name: 'Services',
+            item: `${baseUrl}${language === 'fr' ? '/fr' : ''}/services`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: service.navLabel || service.title,
+            item: url,
           },
         ],
       },

@@ -12,14 +12,51 @@ import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {getPublicConfig, siteConfig} from '~/lib/pasquin';
+import {
+  getLanguageFromPathSearch,
+  getLanguageFromRequest,
+  getLocalizedUrl,
+} from '~/lib/i18n';
 
-export const meta: Route.MetaFunction = ({data}) => {
+export const meta: Route.MetaFunction = ({data, location}) => {
+  const product = data?.product;
+  const language =
+    data?.language ?? getLanguageFromPathSearch(location.pathname, location.search);
+  const siteUrl = data?.publicConfig.siteUrl || siteConfig.defaultSiteUrl;
+
+  if (!product) {
+    return [{title: `${siteConfig.logo} | Product`}];
+  }
+
+  const title = product.seo?.title || `${siteConfig.logo} | ${product.title}`;
+  const description =
+    product.seo?.description ||
+    product.description?.slice(0, 280) ||
+    `${product.title} from ${siteConfig.name}.`;
+  const canonical = getLocalizedUrl(siteUrl, `/products/${product.handle}`, language);
+  const alternateEn = getLocalizedUrl(siteUrl, `/products/${product.handle}`, 'en');
+  const alternateFr = getLocalizedUrl(siteUrl, `/products/${product.handle}`, 'fr');
+  const imageUrl =
+    product.selectedOrFirstAvailableVariant?.image?.url ||
+    `${siteUrl}${siteConfig.ogImagePath}`;
+
   return [
-    {title: `/ pasquin | ${data?.product.title ?? ''}`},
-    {
-      rel: 'canonical',
-      href: `/products/${data?.product.handle}`,
-    },
+    {title},
+    {name: 'description', content: description},
+    {tagName: 'link', rel: 'canonical', href: canonical},
+    {tagName: 'link', rel: 'alternate', hrefLang: 'en-CA', href: alternateEn},
+    {tagName: 'link', rel: 'alternate', hrefLang: 'fr-CA', href: alternateFr},
+    {property: 'og:title', content: title},
+    {property: 'og:description', content: description},
+    {property: 'og:type', content: 'product'},
+    {property: 'og:url', content: canonical},
+    {property: 'og:image', content: imageUrl},
+    {property: 'og:locale', content: language === 'fr' ? 'fr_CA' : 'en_CA'},
+    {name: 'twitter:card', content: 'summary_large_image'},
+    {name: 'twitter:title', content: title},
+    {name: 'twitter:description', content: description},
+    {name: 'twitter:image', content: imageUrl},
   ];
 };
 
@@ -48,6 +85,7 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   const [{product}] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
       variables: {handle, selectedOptions: getSelectedProductOptions(request)},
+      cache: storefront.CacheLong(),
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
@@ -59,8 +97,52 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   // The API handle might be localized, so redirect to the localized handle
   redirectIfHandleIsLocalized(request, {handle, data: product});
 
+  const language = getLanguageFromRequest(request);
+  const publicConfig = getPublicConfig(context.env);
+  const canonical = getLocalizedUrl(
+    publicConfig.siteUrl,
+    `/products/${product.handle}`,
+    language,
+  );
+  const variant = product.selectedOrFirstAvailableVariant;
+  const imageUrl =
+    variant?.image?.url || `${publicConfig.siteUrl}${siteConfig.ogImagePath}`;
+  const description =
+    product.seo?.description || product.description || product.title;
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description,
+    image: imageUrl,
+    sku: variant?.sku || undefined,
+    brand: {
+      '@type': 'Brand',
+      name: product.vendor || siteConfig.name,
+    },
+    offers: variant?.price
+      ? {
+          '@type': 'Offer',
+          url: canonical,
+          priceCurrency: variant.price.currencyCode,
+          price: variant.price.amount,
+          availability: variant.availableForSale
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock',
+          itemCondition: 'https://schema.org/NewCondition',
+          seller: {
+            '@type': 'Organization',
+            name: siteConfig.name,
+          },
+        }
+      : undefined,
+  };
+
   return {
     product,
+    language,
+    publicConfig,
+    structuredData,
   };
 }
 
@@ -77,7 +159,7 @@ function loadDeferredData({context, params}: Route.LoaderArgs) {
 }
 
 export default function Product() {
-  const {product} = useLoaderData<typeof loader>();
+  const {product, structuredData} = useLoaderData<typeof loader>();
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -99,6 +181,10 @@ export default function Product() {
 
   return (
     <div className="product">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{__html: JSON.stringify(structuredData)}}
+      />
       <ProductImage image={selectedVariant?.image} />
       <div className="product-main">
         <h1>{title}</h1>
@@ -128,6 +214,8 @@ export default function Product() {
               title: product.title,
               price: selectedVariant?.price.amount || '0',
               vendor: product.vendor,
+              productType: product.productType,
+              sku: selectedVariant?.sku || '',
               variantId: selectedVariant?.id || '',
               variantTitle: selectedVariant?.title || '',
               quantity: 1,
@@ -182,6 +270,7 @@ const PRODUCT_FRAGMENT = `#graphql
     title
     vendor
     handle
+    productType
     descriptionHtml
     description
     encodedVariantExistence

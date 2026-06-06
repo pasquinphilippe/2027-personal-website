@@ -46,6 +46,49 @@ Crawl-Delay: 10
 
 User-agent: Pinterest
 Crawl-delay: 1
+
+# AI / answer-engine crawlers — allow indexing of content
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Bytespider
+Disallow: /
 `.trim();
 }
 
@@ -64,6 +107,7 @@ function generalDisallowRules({
 Disallow: /account
 Allow: /llms.txt
 Allow: /services-sitemap.xml
+Allow: /feed.xml
 Disallow: /collections/*sort_by*
 Disallow: /*/collections/*sort_by*
 Disallow: /collections/*+*
