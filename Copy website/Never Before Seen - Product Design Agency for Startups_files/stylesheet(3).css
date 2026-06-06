@@ -1,0 +1,26 @@
+@font-face {
+    font-family: 'Inter Display';
+    src: url('InterDisplay-Regular.eot');
+    src: url('InterDisplay-Regular.eot?#iefix') format('embedded-opentype'),
+        url('InterDisplay-Regular.woff2') format('woff2'),
+        url('InterDisplay-Regular.woff') format('woff'),
+        url('InterDisplay-Regular.ttf') format('truetype'),
+        url('InterDisplay-Regular.svg#InterDisplay-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter Display';
+    src: url('InterDisplay-Medium.eot');
+    src: url('InterDisplay-Medium.eot?#iefix') format('embedded-opentype'),
+        url('InterDisplay-Medium.woff2') format('woff2'),
+        url('InterDisplay-Medium.woff') format('woff'),
+        url('InterDisplay-Medium.ttf') format('truetype'),
+        url('InterDisplay-Medium.svg#InterDisplay-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+

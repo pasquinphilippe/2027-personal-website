@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Suisse BP Intl';
+    src: url('SuisseBPIntl-Regular.eot');
+    src: url('SuisseBPIntl-Regular.eot?#iefix') format('embedded-opentype'),
+        url('SuisseBPIntl-Regular.woff2') format('woff2'),
+        url('SuisseBPIntl-Regular.woff') format('woff'),
+        url('SuisseBPIntl-Regular.ttf') format('truetype'),
+        url('SuisseBPIntl-Regular.svg#SuisseBPIntl-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
