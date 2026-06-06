@@ -2,7 +2,6 @@ import {NavLink} from 'react-router';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
 import {
   capabilities,
-  merchantWins,
   navItems,
   services,
   siteConfig,
@@ -70,7 +69,9 @@ export function Footer(_props: FooterProps) {
           </div>
           <div className="gap-m-plus" />
           <div className="small-text light">
-            {merchantWins.slice(0, 3).join(' / ')}
+            Montreal, Quebec / Shopify development
+            <br />
+            Bank of hours + monthly retainers
             <br />
             © 2026 Philippe Pasquin
           </div>
