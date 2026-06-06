@@ -20,5 +20,6 @@ declare global {
     PUBLIC_SUPPORT_EMAIL?: string;
     PUBLIC_CAL_ORIGIN?: string;
     PUBLIC_CAL_LINK?: string;
+    CAL_API_KEY?: string;
   }
 }

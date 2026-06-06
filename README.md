@@ -30,7 +30,12 @@ PUBLIC_CONTACT_EMAIL=hello@pasquin.ca
 PUBLIC_SUPPORT_EMAIL=support@pasquin.ca
 PUBLIC_CAL_ORIGIN=https://cal.com
 PUBLIC_CAL_LINK=your-cal-username/shopify-strategy-call
+CAL_API_KEY=cal_live_...
 ```
+
+`CAL_API_KEY` is private. Keep it in local `.env` or Oxygen secrets only. The
+visible booking selector uses `PUBLIC_CAL_LINK` for the client-side handoff;
+server-side Cal.com API routes should read `CAL_API_KEY`.
 
 Shopify storefront variables are managed by Hydrogen/Oxygen when linked:
 
