@@ -527,7 +527,8 @@ aside main {
   padding: var(--gap-m) 0;
 }
 
-.site-wordmark {
+.site-wordmark,
+.site-icon {
   position: relative;
   z-index: 2;
   display: flex;
@@ -544,7 +545,17 @@ aside main {
   transition: background var(--transition);
 }
 
-.site-wordmark:hover {
+.site-icon {
+  font-size: 0;
+}
+
+.site-icon:before {
+  content: "/ pasquin";
+  font-size: var(--font-size-sm);
+}
+
+.site-wordmark:hover,
+.site-icon:hover {
   background: rgba(0, 0, 0, 0.04);
 }
 
