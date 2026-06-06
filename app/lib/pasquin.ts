@@ -8,6 +8,7 @@ export const siteConfig = {
   defaultSiteUrl: 'https://philippepasquin.com',
   defaultContactEmail: 'philippe@philippepasquin.com',
   defaultCalOrigin: 'https://cal.com',
+  defaultCalLink: 'philippepasquin/shopify-strategy-call',
   location: {
     city: 'Montreal',
     region: 'Quebec',
@@ -20,7 +21,7 @@ export function getPublicConfig(env?: Env) {
     siteUrl: env?.PUBLIC_SITE_URL || siteConfig.defaultSiteUrl,
     contactEmail: env?.PUBLIC_CONTACT_EMAIL || siteConfig.defaultContactEmail,
     calOrigin: env?.PUBLIC_CAL_ORIGIN || siteConfig.defaultCalOrigin,
-    calLink: env?.PUBLIC_CAL_LINK || '',
+    calLink: env?.PUBLIC_CAL_LINK || siteConfig.defaultCalLink,
   };
 }
 
