@@ -98,12 +98,6 @@ export function FeaturedWork() {
           ))}
         </div>
       </div>
-      <div className="gap-m" />
-      <div className="work-slider-progress" aria-hidden="true">
-        {workItems.slice(0, 6).map((item, index) => (
-          <span className={index === 0 ? 'active' : ''} key={item.slug} />
-        ))}
-      </div>
     </section>
   );
 }

@@ -1333,25 +1333,6 @@ aside main {
   line-height: 1.2;
 }
 
-.work-slider-progress {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-
-.work-slider-progress span {
-  width: 36px;
-  height: 4px;
-  overflow: hidden;
-  border-radius: 2px;
-  background: rgba(43, 43, 37, 0.16);
-}
-
-.work-slider-progress span.active {
-  width: 56px;
-  background: rgba(43, 43, 37, 0.36);
-}
-
 @media (max-width: 700px) {
   .filter-row {
     width: calc(100vw - (var(--gap-l) * 2));
