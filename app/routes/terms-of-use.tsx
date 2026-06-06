@@ -102,8 +102,8 @@ export default function TermsOfUsePage() {
             Ces conditions sont regies par les lois du Quebec et du Canada,
             selon le cas. Les questions sur ces conditions peuvent etre envoyees
             a{' '}
-            <a href={`mailto:${siteConfig.defaultContactEmail}`}>
-              {siteConfig.defaultContactEmail}
+            <a href={`mailto:${siteConfig.defaultSupportEmail}`}>
+              {siteConfig.defaultSupportEmail}
             </a>
             .
           </p>
@@ -178,8 +178,8 @@ export default function TermsOfUsePage() {
         <p>
           These terms are governed by the laws of Quebec and Canada, as
           applicable. Questions about these terms can be sent to{' '}
-          <a href={`mailto:${siteConfig.defaultContactEmail}`}>
-            {siteConfig.defaultContactEmail}
+          <a href={`mailto:${siteConfig.defaultSupportEmail}`}>
+            {siteConfig.defaultSupportEmail}
           </a>
           .
         </p>

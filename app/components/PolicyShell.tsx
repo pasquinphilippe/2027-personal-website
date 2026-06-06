@@ -62,8 +62,8 @@ export function PolicyShell({
           {children}
           <div className="policy-contact">
             <span>{questionsLabel}</span>
-            <a href={`mailto:${siteConfig.defaultContactEmail}`}>
-              {siteConfig.defaultContactEmail}
+            <a href={`mailto:${siteConfig.defaultSupportEmail}`}>
+              {siteConfig.defaultSupportEmail}
             </a>
           </div>
         </article>

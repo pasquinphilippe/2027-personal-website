@@ -114,7 +114,7 @@ export default function PrivacyPolicyPage() {
 
         <PolicySection title="Consentement, acces et choix">
           <p>
-            Vous pouvez contacter {siteConfig.defaultContactEmail} pour demander
+            Vous pouvez contacter {siteConfig.defaultSupportEmail} pour demander
             l’acces a vos renseignements personnels, demander une correction,
             retirer votre consentement lorsque applicable ou poser des questions
             sur les pratiques de confidentialite.
@@ -214,7 +214,7 @@ export default function PrivacyPolicyPage() {
 
       <PolicySection title="Consent, access, and choices">
         <p>
-          You can contact {siteConfig.defaultContactEmail} to request access to
+          You can contact {siteConfig.defaultSupportEmail} to request access to
           personal information, ask for corrections, withdraw consent where
           applicable, or ask questions about privacy practices.
         </p>

@@ -26,7 +26,8 @@ The generated Hydrogen project includes Mock.shop defaults for local development
 ```bash
 SESSION_SECRET=...
 PUBLIC_SITE_URL=https://your-domain.com
-PUBLIC_CONTACT_EMAIL=your@email.com
+PUBLIC_CONTACT_EMAIL=hello@pasquin.ca
+PUBLIC_SUPPORT_EMAIL=support@pasquin.ca
 PUBLIC_CAL_ORIGIN=https://cal.com
 PUBLIC_CAL_LINK=your-cal-username/shopify-strategy-call
 ```

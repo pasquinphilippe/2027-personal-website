@@ -6,7 +6,8 @@ export const siteConfig = {
   shortName: 'Pasquin',
   descriptor: 'Montreal-based Shopify developer',
   defaultSiteUrl: 'https://philippepasquin.com',
-  defaultContactEmail: 'philippe@philippepasquin.com',
+  defaultContactEmail: 'hello@pasquin.ca',
+  defaultSupportEmail: 'support@pasquin.ca',
   defaultCalOrigin: 'https://cal.com',
   defaultCalLink: 'philippepasquin/shopify-strategy-call',
   location: {
@@ -20,6 +21,7 @@ export function getPublicConfig(env?: Env) {
   return {
     siteUrl: env?.PUBLIC_SITE_URL || siteConfig.defaultSiteUrl,
     contactEmail: env?.PUBLIC_CONTACT_EMAIL || siteConfig.defaultContactEmail,
+    supportEmail: env?.PUBLIC_SUPPORT_EMAIL || siteConfig.defaultSupportEmail,
     calOrigin: env?.PUBLIC_CAL_ORIGIN || siteConfig.defaultCalOrigin,
     calLink: env?.PUBLIC_CAL_LINK || siteConfig.defaultCalLink,
   };

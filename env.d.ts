@@ -17,6 +17,7 @@ declare global {
     PUBLIC_CHECKOUT_DOMAIN: string;
     PUBLIC_SITE_URL?: string;
     PUBLIC_CONTACT_EMAIL?: string;
+    PUBLIC_SUPPORT_EMAIL?: string;
     PUBLIC_CAL_ORIGIN?: string;
     PUBLIC_CAL_LINK?: string;
   }
