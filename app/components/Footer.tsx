@@ -6,6 +6,7 @@ import {
   services,
   siteConfig,
 } from '~/lib/pasquin';
+import {legalNavItems} from '~/lib/legal';
 
 interface FooterProps {
   footer: Promise<FooterQuery | null>;
@@ -68,6 +69,14 @@ export function Footer(_props: FooterProps) {
             </NavLink>
           </div>
           <div className="gap-m-plus" />
+          <nav className="footer-legal-links" aria-label="Legal links">
+            {legalNavItems.map((item) => (
+              <NavLink key={item.href} to={item.href}>
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+          <div className="gap-m" />
           <div className="small-text light">
             Montreal, Quebec / Shopify development
             <br />
