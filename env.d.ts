@@ -12,6 +12,8 @@ declare global {
     PUBLIC_STORE_DOMAIN: string;
     PUBLIC_STOREFRONT_API_TOKEN: string;
     PUBLIC_STOREFRONT_ID: string;
+    PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID: string;
+    SHOP_ID: string;
     PUBLIC_CHECKOUT_DOMAIN: string;
     PUBLIC_SITE_URL?: string;
     PUBLIC_CONTACT_EMAIL?: string;

@@ -37,8 +37,19 @@ Shopify storefront variables are managed by Hydrogen/Oxygen when linked:
 PUBLIC_STORE_DOMAIN=...
 PUBLIC_STOREFRONT_API_TOKEN=...
 PUBLIC_STOREFRONT_ID=...
+PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID=...
+SHOP_ID=...
 PUBLIC_CHECKOUT_DOMAIN=...
 ```
+
+Customer Account API OAuth requires the Hydrogen tunnel in local development:
+
+```bash
+npm run dev -- --customer-account-push
+```
+
+Open the generated `https://*.tryhydrogen.dev` URL for `/account/*` OAuth
+routes instead of `localhost`.
 
 ## Pages
 
