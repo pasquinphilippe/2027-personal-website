@@ -608,16 +608,19 @@ export default function ClientLoginPage() {
 
     setActiveDashboardSection(sectionId);
     window.requestAnimationFrame(() => {
-      const shell = document.querySelector('.portal-shell');
       const prefersReducedMotion = window.matchMedia(
         '(prefers-reduced-motion: reduce)',
       ).matches;
+      const isMobileDashboard = window.matchMedia('(max-width: 800px)').matches;
+      const target = document.querySelector(
+        isMobileDashboard ? '.portal-main' : '.portal-shell',
+      );
 
-      if (!shell) return;
+      if (!target) return;
 
       window.scrollTo({
         top: Math.max(
-          shell.getBoundingClientRect().top + window.scrollY - 104,
+          target.getBoundingClientRect().top + window.scrollY - 104,
           0,
         ),
         behavior: prefersReducedMotion ? 'auto' : 'smooth',
