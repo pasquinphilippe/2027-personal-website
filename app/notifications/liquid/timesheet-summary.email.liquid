@@ -1,0 +1,44 @@
+{% doc %}
+@param {object} customer - Shopify customer receiving the summary
+@param {object} contact - Billing contact role and preference data
+@param {object} company - Client company workspace data
+@param {object} billing - Billing policy and cycle metadata
+@param {object} timesheet - Published Supabase timesheet rollup
+@param {object} retainer - Retainer bank rollup
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% assign billable_hours = timesheet.billable_minutes | divided_by: 60.0 | round: 2 %}
+{% assign non_billable_hours = timesheet.non_billable_minutes | divided_by: 60.0 | round: 2 %}
+{% assign remaining_hours = retainer.remaining_minutes | divided_by: 60.0 | round: 2 %}
+
+{% if locale == 'fr' %}
+Bonjour {{ contact.name | default: customer.first_name | default: '!' | escape }},
+
+Le resume de temps pour {{ company.name | default: customer.name | escape }} est publie.
+
+Periode: {{ billing.cycle_label | default: timesheet.month | escape }}
+Temps facturable: {{ billable_hours }} h
+Temps non facturable: {{ non_billable_hours }} h
+Banque restante: {{ remaining_hours }} h
+Montant a reviser: {{ timesheet.billable_amount | default: 'CA$0.00' | escape }}
+
+Consulter la feuille de temps:
+{{ links.timesheet_url | default: links.portal_url }}
+
+{% else %}
+Hi {{ contact.name | default: customer.first_name | default: 'there' | escape }},
+
+The time summary for {{ company.name | default: customer.name | escape }} has been published.
+
+Period: {{ billing.cycle_label | default: timesheet.month | escape }}
+Billable time: {{ billable_hours }} h
+Non-billable time: {{ non_billable_hours }} h
+Remaining bank: {{ remaining_hours }} h
+Amount to review: {{ timesheet.billable_amount | default: 'CA$0.00' | escape }}
+
+Review the timesheet:
+{{ links.timesheet_url | default: links.portal_url }}
+
+{% endif %}

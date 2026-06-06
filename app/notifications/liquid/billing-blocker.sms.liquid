@@ -1,0 +1,17 @@
+{% doc %}
+@param {object} contact - Billing contact role and preference data
+@param {object} company - Client company workspace data
+@param {object} billing - Billing cycle and cadence metadata
+@param {object} blocker - Billing blocker item
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% assign company_name = company.name | default: 'your team' %}
+{% assign cycle_label = billing.cycle_label | default: billing.title | default: 'billing' %}
+{% assign action = blocker.action | default: 'Review billing' %}
+{% if locale == 'fr' %}
+Pasquin: {{ cycle_label | escape }} bloque pour {{ company_name | escape }}. Action: {{ action | escape }}. {{ links.billing_url | default: links.portal_url }}
+{% else %}
+Pasquin: {{ cycle_label | escape }} blocked for {{ company_name | escape }}. Action: {{ action | escape }}. {{ links.billing_url | default: links.portal_url }}
+{% endif %}

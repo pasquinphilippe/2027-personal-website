@@ -1,0 +1,41 @@
+{% doc %}
+@param {object} customer - Shopify customer receiving the invoice notice
+@param {object} contact - Billing contact role and preference data
+@param {object} company - Client company workspace data
+@param {object} invoice - Invoice state from Supabase/QBO
+@param {object} billing - Billing policy and payment metadata
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% assign invoice_number = invoice.number | default: invoice.invoice_number | default: 'Draft' %}
+
+{% if locale == 'fr' %}
+Bonjour {{ contact.name | default: customer.first_name | default: '!' | escape }},
+
+La facture {{ invoice_number | escape }} pour {{ company.name | default: customer.name | escape }} est {{ invoice.status | default: 'prete' | escape }}.
+
+Montant: {{ invoice.amount | default: 'CA$0.00' | escape }}
+Echeance: {{ invoice.due | default: billing.next_billing_date | escape }}
+Mode: {{ billing.label | default: 'Facturation Pasquin' | escape }}
+
+Voir la facture:
+{{ links.invoice_url | default: links.portal_url }}
+
+Merci,
+Philippe
+{% else %}
+Hi {{ contact.name | default: customer.first_name | default: 'there' | escape }},
+
+Invoice {{ invoice_number | escape }} for {{ company.name | default: customer.name | escape }} is {{ invoice.status | default: 'ready' | escape }}.
+
+Amount: {{ invoice.amount | default: 'CA$0.00' | escape }}
+Due: {{ invoice.due | default: billing.next_billing_date | escape }}
+Method: {{ billing.label | default: 'Pasquin billing' | escape }}
+
+View the invoice:
+{{ links.invoice_url | default: links.portal_url }}
+
+Thanks,
+Philippe
+{% endif %}

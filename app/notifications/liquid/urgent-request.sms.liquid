@@ -1,0 +1,13 @@
+{% doc %}
+@param {object} contact - Company member role and preference data
+@param {object} company - Client company workspace data
+@param {object} task - High-priority task or client request
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% if locale == 'fr' %}
+Pasquin: reponse requise pour {{ company.name | escape }} - {{ task.title | escape }}. {{ links.task_url | default: links.portal_url }}
+{% else %}
+Pasquin: response needed for {{ company.name | escape }} - {{ task.title | escape }}. {{ links.task_url | default: links.portal_url }}
+{% endif %}

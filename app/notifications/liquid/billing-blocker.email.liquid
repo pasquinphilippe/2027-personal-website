@@ -1,0 +1,43 @@
+{% doc %}
+@param {object} customer - Shopify customer receiving the blocker notice
+@param {object} contact - Billing contact role and preference data
+@param {object} company - Client company workspace data
+@param {object} billing - Billing cycle and cadence metadata
+@param {object} blocker - Billing blocker item
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% assign company_name = company.name | default: customer.name | default: 'your team' %}
+
+{% if locale == 'fr' %}
+Bonjour {{ contact.name | default: customer.first_name | default: '!' | escape }},
+
+Un item bloque la facturation de {{ company_name | escape }}.
+
+Cycle: {{ billing.cycle_label | default: billing.title | default: 'cycle facturation' | escape }}
+Blocage: {{ blocker.title | default: 'Action requise' | escape }}
+Exigence: {{ blocker.requirement | default: 'A confirmer' | escape }}
+Action: {{ blocker.action | default: 'Reviser dans le portail' | escape }}
+
+Debloquer la facturation:
+{{ links.billing_url | default: links.portal_url }}
+
+Merci,
+Philippe
+{% else %}
+Hi {{ contact.name | default: customer.first_name | default: 'there' | escape }},
+
+One item is blocking billing for {{ company_name | escape }}.
+
+Cycle: {{ billing.cycle_label | default: billing.title | default: 'billing run' | escape }}
+Blocker: {{ blocker.title | default: 'Action needed' | escape }}
+Requirement: {{ blocker.requirement | default: 'To confirm' | escape }}
+Action: {{ blocker.action | default: 'Review in the portal' | escape }}
+
+Unblock billing:
+{{ links.billing_url | default: links.portal_url }}
+
+Thanks,
+Philippe
+{% endif %}

@@ -1,0 +1,41 @@
+{% doc %}
+@param {object} customer - Shopify customer receiving the reminder
+@param {object} contact - Company member role and preference data
+@param {object} company - Client company workspace data
+@param {object} access - Account invite and permission state
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% assign company_name = company.name | default: customer.name | default: 'your team' %}
+{% assign activation_url = links.activation_url | default: links.portal_url %}
+
+{% if locale == 'fr' %}
+Bonjour {{ contact.name | default: customer.first_name | default: '!' | escape }},
+
+Votre acces au portail pour {{ company_name | escape }} est encore en attente.
+
+Statut: {{ access.status | default: 'invite' | escape }}
+Acces: {% for permission in access.permissions limit: 8 %}{{ permission | escape }}{% unless forloop.last %}, {% endunless %}{% endfor %}
+Prochaine etape: {{ access.next_step | default: "activer l'acces au portail" | escape }}
+
+Activer votre acces:
+{{ activation_url }}
+
+Merci,
+Philippe Pasquin
+{% else %}
+Hi {{ contact.name | default: customer.first_name | default: 'there' | escape }},
+
+Your Pasquin portal access for {{ company_name | escape }} is still pending.
+
+Status: {{ access.status | default: 'invited' | escape }}
+Access: {% for permission in access.permissions limit: 8 %}{{ permission | escape }}{% unless forloop.last %}, {% endunless %}{% endfor %}
+Next step: {{ access.next_step | default: 'activate your portal access' | escape }}
+
+Activate your access:
+{{ activation_url }}
+
+Thanks,
+Philippe Pasquin
+{% endif %}

@@ -1,0 +1,44 @@
+{% doc %}
+@param {object} customer - Shopify customer receiving the billing request
+@param {object} contact - Billing contact role and preference data
+@param {object} company - Client company workspace data
+@param {object} billing - Billing policy and cadence metadata
+@param {object} payment - Payment method readiness state
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% assign company_name = company.name | default: customer.name | default: 'your team' %}
+{% assign payment_url = links.payment_url | default: links.portal_url %}
+
+{% if locale == 'fr' %}
+Bonjour {{ contact.name | default: customer.first_name | default: '!' | escape }},
+
+La facturation de {{ company_name | escape }} a besoin d'une confirmation avant le prochain cycle.
+
+Cycle: {{ billing.label | default: 'Facturation Pasquin' | escape }}
+Prochaine date: {{ billing.next_billing_date | default: 'a confirmer' | escape }}
+Statut paiement: {{ payment.status | default: 'configuration requise' | escape }}
+Action: {{ payment.next_action | default: 'confirmer la methode de paiement' | escape }}
+
+Mettre a jour la facturation:
+{{ payment_url }}
+
+Merci,
+Philippe
+{% else %}
+Hi {{ contact.name | default: customer.first_name | default: 'there' | escape }},
+
+Billing for {{ company_name | escape }} needs confirmation before the next cycle.
+
+Cycle: {{ billing.label | default: 'Pasquin billing' | escape }}
+Next date: {{ billing.next_billing_date | default: 'to confirm' | escape }}
+Payment status: {{ payment.status | default: 'needs setup' | escape }}
+Action: {{ payment.next_action | default: 'confirm the payment method' | escape }}
+
+Update billing:
+{{ payment_url }}
+
+Thanks,
+Philippe
+{% endif %}

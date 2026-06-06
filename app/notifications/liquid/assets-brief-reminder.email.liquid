@@ -1,0 +1,40 @@
+{% doc %}
+@param {object} customer - Shopify customer receiving the reminder
+@param {object} contact - Company member role and preference data
+@param {object} company - Client company workspace data
+@param {object} assets - Open asset requests
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% assign company_name = company.name | default: customer.name | default: 'your team' %}
+
+{% if locale == 'fr' %}
+Bonjour {{ contact.name | default: customer.first_name | default: '!' | escape }},
+
+Il reste quelques elements a confirmer pour garder le lancement {{ company_name | escape }} en mouvement.
+
+{% for asset in assets limit: 6 %}
+- {{ asset.title | escape }}: {{ asset.status | default: 'requis' | escape }}{% if asset.due %} avant {{ asset.due | escape }}{% endif %}
+{% endfor %}
+
+Envoyer ou commenter les assets:
+{{ links.assets_url | default: links.portal_url }}
+
+Merci,
+Philippe
+{% else %}
+Hi {{ contact.name | default: customer.first_name | default: 'there' | escape }},
+
+A few items still need confirmation to keep the {{ company_name | escape }} kickoff moving.
+
+{% for asset in assets limit: 6 %}
+- {{ asset.title | escape }}: {{ asset.status | default: 'needed' | escape }}{% if asset.due %} by {{ asset.due | escape }}{% endif %}
+{% endfor %}
+
+Upload or comment on the assets:
+{{ links.assets_url | default: links.portal_url }}
+
+Thanks,
+Philippe
+{% endif %}

@@ -1,0 +1,38 @@
+{% doc %}
+@param {object} customer - Shopify customer receiving the retainer notice
+@param {object} contact - Billing contact role and preference data
+@param {object} company - Client company workspace data
+@param {object} retainer - Shopify subscription app state and bank rollup
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% assign plan_name = retainer.plan_name | default: 'Retainer' %}
+
+{% if locale == 'fr' %}
+Bonjour {{ contact.name | default: customer.first_name | default: '!' | escape }},
+
+Le retainer {{ plan_name | escape }} pour {{ company.name | default: customer.name | escape }} a ete mis a jour.
+
+Statut: {{ retainer.status | default: 'active' | escape }}
+Periode: {{ retainer.current_period_start | escape }} - {{ retainer.current_period_end | escape }}
+Minutes incluses: {{ retainer.monthly_minutes | default: 0 }}
+Minutes utilisees: {{ retainer.used_minutes | default: 0 }}
+
+Gerer le retainer:
+{{ links.retainer_url | default: links.portal_url }}
+
+{% else %}
+Hi {{ contact.name | default: customer.first_name | default: 'there' | escape }},
+
+The {{ plan_name | escape }} retainer for {{ company.name | default: customer.name | escape }} has been updated.
+
+Status: {{ retainer.status | default: 'active' | escape }}
+Period: {{ retainer.current_period_start | escape }} - {{ retainer.current_period_end | escape }}
+Included minutes: {{ retainer.monthly_minutes | default: 0 }}
+Used minutes: {{ retainer.used_minutes | default: 0 }}
+
+Manage the retainer:
+{{ links.retainer_url | default: links.portal_url }}
+
+{% endif %}

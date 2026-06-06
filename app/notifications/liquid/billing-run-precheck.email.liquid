@@ -1,0 +1,50 @@
+{% doc %}
+@param {object} customer - Shopify customer receiving the billing precheck
+@param {object} contact - Billing contact role and preference data
+@param {object} company - Client company workspace data
+@param {object} billing - Billing cycle and cadence metadata
+@param {object} checklist - Client-visible billing readiness items
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% assign company_name = company.name | default: customer.name | default: 'your team' %}
+{% assign cycle_label = billing.cycle_label | default: billing.title | default: 'next billing run' %}
+
+{% if locale == 'fr' %}
+Bonjour {{ contact.name | default: customer.first_name | default: '!' | escape }},
+
+Voici le precheck facturation pour {{ company_name | escape }}.
+
+Cycle: {{ cycle_label | escape }}
+Date: {{ billing.date | default: billing.next_billing_date | escape }}
+Regle: {{ billing.rule | default: 'Facturation Pasquin' | escape }}
+
+{% for item in checklist limit: 8 %}
+- {{ item.title | escape }}: {{ item.status | escape }}. {{ item.action | escape }}
+{% endfor %}
+
+Reviser la facturation:
+{{ links.billing_url | default: links.portal_url }}
+
+Merci,
+Philippe
+{% else %}
+Hi {{ contact.name | default: customer.first_name | default: 'there' | escape }},
+
+Here is the billing precheck for {{ company_name | escape }}.
+
+Cycle: {{ cycle_label | escape }}
+Date: {{ billing.date | default: billing.next_billing_date | escape }}
+Rule: {{ billing.rule | default: 'Pasquin billing' | escape }}
+
+{% for item in checklist limit: 8 %}
+- {{ item.title | escape }}: {{ item.status | escape }}. {{ item.action | escape }}
+{% endfor %}
+
+Review billing:
+{{ links.billing_url | default: links.portal_url }}
+
+Thanks,
+Philippe
+{% endif %}

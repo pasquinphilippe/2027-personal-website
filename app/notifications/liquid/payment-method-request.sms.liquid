@@ -1,0 +1,17 @@
+{% doc %}
+@param {object} contact - Billing contact role and preference data
+@param {object} company - Client company workspace data
+@param {object} billing - Billing policy and cadence metadata
+@param {object} payment - Payment method readiness state
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% assign company_name = company.name | default: 'your team' %}
+{% assign next_date = billing.next_billing_date | default: 'to confirm' %}
+{% assign payment_status = payment.status | default: 'missing' %}
+{% if locale == 'fr' %}
+Pasquin: paiement {{ payment_status | escape }} pour {{ company_name | escape }} avant {{ next_date | escape }}. {{ links.payment_url | default: links.portal_url }}
+{% else %}
+Pasquin: payment {{ payment_status | escape }} for {{ company_name | escape }} before {{ next_date | escape }}. {{ links.payment_url | default: links.portal_url }}
+{% endif %}

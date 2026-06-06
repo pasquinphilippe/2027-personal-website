@@ -1,0 +1,41 @@
+{% doc %}
+@param {object} customer - Shopify customer receiving the invite
+@param {object} contact - Company member role and preference data
+@param {object} company - Client company workspace data
+@param {object} portal - Portal invite and onboarding state
+@param {object} links - Signed links for account access and support
+{% enddoc %}
+
+{% assign locale = contact.locale | default: customer.metafields.app.client_portal.value.default_locale | default: 'en' %}
+{% assign company_name = company.name | default: customer.name | default: 'your team' %}
+{% assign portal_url = links.portal_url | default: portal.url %}
+
+{% if locale == 'fr' %}
+Bonjour {{ contact.name | default: customer.first_name | default: '!' | escape }},
+
+Votre espace client Pasquin est pret pour {{ company_name | escape }}.
+
+Vous pourrez y suivre les prochaines etapes, confirmer les acces Shopify, partager les assets, consulter les demandes, voir la feuille de temps publiee et garder un oeil sur les factures.
+
+Prochaine etape: {{ portal.next_action | default: 'confirmer le brief de lancement' | escape }}.
+
+Ouvrir votre espace:
+{{ portal_url }}
+
+Merci,
+Philippe Pasquin
+{% else %}
+Hi {{ contact.name | default: customer.first_name | default: 'there' | escape }},
+
+Your Pasquin client workspace is ready for {{ company_name | escape }}.
+
+You can use it to track next steps, confirm Shopify access, share assets, review requests, see published timesheets, and keep billing clear.
+
+Next step: {{ portal.next_action | default: 'confirm the kickoff brief' | escape }}.
+
+Open your workspace:
+{{ portal_url }}
+
+Thanks,
+Philippe Pasquin
+{% endif %}

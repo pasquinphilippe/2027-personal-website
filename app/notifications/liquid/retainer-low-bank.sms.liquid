@@ -1,0 +1,15 @@
+{% doc %}
+@param {object} contact - Billing contact role and preference data
+@param {object} company - Client company workspace data
+@param {object} retainer - Retainer subscription and bank rollup
+@param {object} links - Signed links for portal actions
+{% enddoc %}
+
+{% assign locale = contact.locale | default: 'en' %}
+{% assign remaining_minutes = retainer.remaining_minutes | default: 0 %}
+{% assign remaining_hours = remaining_minutes | divided_by: 60.0 | round: 1 %}
+{% if locale == 'fr' %}
+Pasquin: banque retainer basse pour {{ company.name | escape }}. Il reste {{ remaining_hours }} h. Gerer: {{ links.retainer_url | default: links.portal_url }}
+{% else %}
+Pasquin: low retainer bank for {{ company.name | escape }}. {{ remaining_hours }} h left. Manage: {{ links.retainer_url | default: links.portal_url }}
+{% endif %}
