@@ -1,17 +1,16 @@
+import {redirect} from 'react-router';
 import type {Route} from './+types/account_.login';
 
-export async function loader({request, context}: Route.LoaderArgs) {
+export async function loader({request}: Route.LoaderArgs) {
   const url = new URL(request.url);
-  const acrValues = url.searchParams.get('acr_values') || undefined;
-  const loginHint = url.searchParams.get('login_hint') || undefined;
-  const loginHintMode = url.searchParams.get('login_hint_mode') || undefined;
-  const locale = url.searchParams.get('locale') || undefined;
+  const locale = url.searchParams.get('locale') || '';
+  const language = url.searchParams.get('lang') || '';
+  const params = new URLSearchParams();
 
-  return context.customerAccount.login({
-    countryCode: context.storefront.i18n.country,
-    acrValues,
-    loginHint,
-    loginHintMode,
-    locale,
-  });
+  if (language === 'fr' || locale.toLowerCase().startsWith('fr')) {
+    params.set('lang', 'fr');
+  }
+
+  const query = params.toString();
+  return redirect(`/client-login${query ? `?${query}` : ''}`);
 }

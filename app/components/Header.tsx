@@ -285,7 +285,7 @@ function getLoginHref(loggedIn: boolean, language: LanguageCode) {
     return getLocalizedHref('/account', language);
   }
 
-  return language === 'fr' ? '/account/login?locale=fr-CA' : '/account/login';
+  return getLocalizedHref('/client-login', language);
 }
 
 function HeaderMenuMobileToggle() {
