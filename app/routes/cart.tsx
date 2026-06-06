@@ -1,7 +1,7 @@
 import {useLoaderData, data, type HeadersFunction} from 'react-router';
 import type {Route} from './+types/cart';
 import type {CartQueryDataReturn} from '@shopify/hydrogen';
-import {CartForm} from '@shopify/hydrogen';
+import {Analytics, CartForm} from '@shopify/hydrogen';
 import {CartMain} from '~/components/CartMain';
 
 export const meta: Route.MetaFunction = () => {
@@ -108,6 +108,7 @@ export default function Cart() {
     <div className="cart">
       <h1>Cart</h1>
       <CartMain layout="page" cart={cart} />
+      <Analytics.CartView />
     </div>
   );
 }

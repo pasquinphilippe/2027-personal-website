@@ -18,8 +18,11 @@ import appStyles from '~/styles/app.css?url';
 import legalStyles from '~/styles/legal.css?url';
 import serviceStyles from '~/styles/services.css?url';
 import aboutStyles from '~/styles/about.css?url';
+import pricingStyles from '~/styles/pricing.css?url';
+import getStartedStyles from '~/styles/get-started.css?url';
 import {getLanguageFromRequest} from '~/lib/i18n';
 import {PageLayout} from './components/PageLayout';
+import {WebVitals} from './components/WebVitals';
 
 export type RootLoader = typeof loader;
 
@@ -34,7 +37,9 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
   // revalidate when a mutation is performed e.g add to cart, login...
   if (formMethod && formMethod !== 'GET') return true;
 
-  if (currentUrl.searchParams.get('lang') !== nextUrl.searchParams.get('lang')) {
+  if (
+    currentUrl.searchParams.get('lang') !== nextUrl.searchParams.get('lang')
+  ) {
     return true;
   }
 
@@ -94,7 +99,7 @@ export async function loader(args: Route.LoaderArgs) {
     consent: {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-      withPrivacyBanner: false,
+      withPrivacyBanner: true,
       // localize the privacy banner
       country: args.context.storefront.i18n.country,
       language: args.context.storefront.i18n.language,
@@ -165,6 +170,8 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={legalStyles}></link>
         <link rel="stylesheet" href={serviceStyles}></link>
         <link rel="stylesheet" href={aboutStyles}></link>
+        <link rel="stylesheet" href={pricingStyles}></link>
+        <link rel="stylesheet" href={getStartedStyles}></link>
         <Meta />
         <Links />
       </head>
@@ -190,6 +197,7 @@ export default function App() {
       shop={data.shop}
       consent={data.consent}
     >
+      <WebVitals />
       <PageLayout {...data}>
         <Outlet />
       </PageLayout>
