@@ -34,9 +34,9 @@ export default function ContactPage() {
           conversation about the Shopify work.
         </p>
       </PageIntro>
-      <PasquinBookingSelector publicConfig={publicConfig} />
-      <div className="gap-xxl" />
       <FeedbackGrid />
+      <div className="gap-xxl" />
+      <PasquinBookingSelector publicConfig={publicConfig} />
       <div className="gap-xxl" />
       <section className="container medium email-line">
         <p>or email directly at</p>

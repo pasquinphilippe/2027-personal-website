@@ -78,9 +78,17 @@ export function FeaturedWork() {
       <div className="work-slider-viewport">
         <div className="work-slider-track">
           {workItems.slice(0, 6).map((item) => (
-            <ProjectCover item={item} key={item.slug} />
+            <div className="work-slider-slide" key={item.slug}>
+              <ProjectCover item={item} />
+            </div>
           ))}
         </div>
+      </div>
+      <div className="gap-m" />
+      <div className="work-slider-progress" aria-hidden="true">
+        {workItems.slice(0, 6).map((item, index) => (
+          <span className={index === 0 ? 'active' : ''} key={item.slug} />
+        ))}
       </div>
     </section>
   );
@@ -146,16 +154,23 @@ export function WorkGrid({limit}: {limit?: number}) {
 export function ProjectCover({item}: {item: (typeof workItems)[number]}) {
   return (
     <Link className="project-card" to="/contact" aria-label={item.title}>
-      <div className="project-grid-cover">
+      <div
+        className="project-grid-cover"
+        style={{backgroundImage: `url(${item.image})`}}
+      >
         <img src={item.image} alt="" loading="lazy" />
         <div className="project-card-overlay">
           <div className="project-card-overlay-shade" />
+          <div className="project-card-overlay-blur-1" />
+          <div className="project-card-overlay-blur-2" />
           <div className="project-card-overlay-inner">
-            <div>
-              <div className="project-card-company">{item.eyebrow}</div>
-              <div className="project-card-title">{item.title}</div>
+            <div className="project-card-logo" aria-hidden="true">
+              {item.eyebrow.slice(0, 1)}
             </div>
-            <p>{item.text}</p>
+            <div className="project-card-text">
+              <div className="project-card-company">{item.title}</div>
+              <div className="project-card-title">{item.text}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -164,44 +179,96 @@ export function ProjectCover({item}: {item: (typeof workItems)[number]}) {
 }
 
 export function PricingCards() {
+  const pricingCards = [
+    {
+      label: 'Bank',
+      name: bankPackages[0].name,
+      price: bankPackages[0].price,
+      cadence: 'one-time, scoped start',
+      features: [
+        bankPackages[0].hours,
+        bankPackages[0].bestFor,
+        bankPackages[0].detail,
+      ],
+    },
+    {
+      label: 'Retainer',
+      name: retainerPackages[0].name,
+      price: retainerPackages[0].price,
+      cadence: 'per month',
+      features: [
+        retainerPackages[0].detail,
+        retainerPackages[0].bestFor,
+        retainerPackages[0].rollover,
+      ],
+    },
+    {
+      label: 'Retainer',
+      name: retainerPackages[1].name,
+      price: retainerPackages[1].price,
+      cadence: 'per month',
+      badge: 'Most Popular',
+      features: [
+        retainerPackages[1].detail,
+        retainerPackages[1].bestFor,
+        retainerPackages[1].rollover,
+      ],
+    },
+    {
+      label: 'Bank',
+      name: bankPackages[2].name,
+      price: bankPackages[2].price,
+      cadence: 'one-time sprint',
+      features: [
+        bankPackages[2].hours,
+        bankPackages[2].bestFor,
+        bankPackages[2].detail,
+      ],
+    },
+  ];
+
   return (
     <section className="container" id="pricing">
       <div className="pricing-grid">
         <article className="price-card by-hour">
-          <div className="mini-heading">By the hour</div>
-          <h2>$200/h</h2>
-          <p className="light">Reserved for small ad-hoc consulting and quick diagnostics.</p>
+          <div>
+            <div className="mini-heading">By The Hour</div>
+            <h2>$200/h</h2>
+            <p>per hour</p>
+          </div>
+          <div className="price-card-note">
+            This option is typically reserved for ad-hoc consulting and quick
+            diagnostics.
+          </div>
         </article>
-        {bankPackages.map((item) => (
-          <article className="price-card" key={item.id}>
+        {pricingCards.map((item) => (
+          <article className="price-card" key={item.name}>
             <div className="price-card-head">
               <div>
-                <div className="mini-heading">Bank of hours</div>
+                <div className="mini-heading">
+                  {item.label}
+                  {item.badge ? <span>{item.badge}</span> : null}
+                </div>
                 <h2>{item.name}</h2>
               </div>
-              <strong>{item.price}</strong>
             </div>
-            <p>{item.bestFor}</p>
-            <hr />
-            <span>{item.hours}</span>
-            <span>{item.detail}</span>
+            <strong>{item.price}</strong>
+            <p>{item.cadence}</p>
+            <div className="price-features">
+              {item.features.map((feature) => (
+                <div className="price-feature" key={feature}>
+                  <span aria-hidden="true" />
+                  {feature}
+                </div>
+              ))}
+            </div>
           </article>
         ))}
-        {retainerPackages.map((item) => (
-          <article className="price-card retainer" key={item.id}>
-            <div className="price-card-head">
-              <div>
-                <div className="mini-heading">Monthly retainer</div>
-                <h2>{item.name}</h2>
-              </div>
-              <strong>{item.price}</strong>
-            </div>
-            <p>{item.bestFor}</p>
-            <hr />
-            <span>{item.detail}</span>
-            <span>{item.rollover}</span>
-          </article>
-        ))}
+      </div>
+      <div className="gap-l" />
+      <div className="currency-note">
+        <span>CAD</span>
+        <p>Retainers include a 10% maximum rollover.</p>
       </div>
     </section>
   );
@@ -254,6 +321,9 @@ export function FeedbackFeature() {
             <div className="gap-l" />
             <div className="testim-author">{note.author}</div>
             <div className="small-text light">{note.role}</div>
+          </div>
+          <div className="testim-right" aria-hidden="true">
+            <img src={workItems[0].image} alt="" loading="lazy" />
           </div>
         </div>
       </div>

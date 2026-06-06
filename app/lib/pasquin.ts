@@ -24,17 +24,18 @@ export function getPublicConfig(env?: Env) {
 
 export const primaryNavItems = [
   {label: 'What We Do', href: '/'},
-  {label: 'Work', href: '/work'},
+  {label: 'Our Work', href: '/work'},
   {label: 'Pricing', href: '/pricing'},
   {label: 'About', href: '/about'},
 ];
 
 export const moreNavItems = [
   {label: 'Testimonials', href: '/testimonials'},
-  {label: 'Contact', href: '/contact'},
 ];
 
-export const navItems = [...primaryNavItems, ...moreNavItems];
+export const contactNavItem = {label: 'Contact', href: '/contact'};
+
+export const navItems = [...primaryNavItems, ...moreNavItems, contactNavItem];
 
 export const services = [
   {

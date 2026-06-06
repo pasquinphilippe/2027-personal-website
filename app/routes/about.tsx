@@ -3,9 +3,8 @@ import {
   CtaSection,
   MerchantWinsTicker,
   PageIntro,
-  ProcessList,
 } from '~/components/LeanSections';
-import {siteConfig} from '~/lib/pasquin';
+import {processSteps, services, siteConfig} from '~/lib/pasquin';
 
 export const meta: Route.MetaFunction = () => [
   {title: 'About | Philippe Pasquin Shopify Developer'},
@@ -26,7 +25,31 @@ export default function AboutPage() {
         </p>
       </PageIntro>
 
+      <section className="container about-team-map">
+        <div className="about-team-row">
+          {services.map((service) => (
+            <article className="about-person-card" key={service.title}>
+              <div className="about-avatar">{service.title.slice(0, 1)}</div>
+              <div>
+                <strong>{service.title}</strong>
+                <span>{service.label}</span>
+              </div>
+            </article>
+          ))}
+          <article className="about-person-card">
+            <div className="about-avatar">S</div>
+            <div>
+              <strong>Support rhythm</strong>
+              <span>Retainers</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div className="gap-xxl" />
+
       <section className="container medium story-copy">
+        <div className="mini-heading">June 6, 2026</div>
         <p>
           I work close to the practical side of ecommerce: product pages, cart
           behavior, theme code, app stacks, launch pressure, analytics, and the
@@ -49,6 +72,14 @@ export default function AboutPage() {
           <div>
             <div className="mini-heading">{siteConfig.location.city}</div>
             <h2>One Shopify developer, directly accountable to the work.</h2>
+            <div className="gap-m" />
+            <div className="process-inline">
+              {processSteps.map((step) => (
+                <span key={step.title}>
+                  {step.number} {step.title}
+                </span>
+              ))}
+            </div>
           </div>
           <p className="light">
             Bank-of-hours and retainer work are designed for merchants who want
@@ -58,8 +89,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <div className="gap-xxl" />
-      <ProcessList />
       <div className="gap-xxl" />
       <CtaSection />
       <MerchantWinsTicker />

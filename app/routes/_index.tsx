@@ -7,7 +7,6 @@ import {
   HomeHero,
   LogoGrid,
   MerchantWinsTicker,
-  ServiceCards,
   WorkGrid,
 } from '~/components/LeanSections';
 import {buildStructuredData, getPublicConfig, siteConfig} from '~/lib/pasquin';
@@ -64,11 +63,9 @@ export default function Homepage() {
       <HomeHero />
       <FeaturedWork />
       <div className="gap-xxl" />
-      <ServiceCards />
-      <div className="gap-xxl" />
       <LogoGrid />
       <div className="gap-xxl" />
-      <WorkGrid limit={4} />
+      <WorkGrid />
       <div className="gap-xxl" />
       <FeedbackFeature />
       <div className="gap-xxl" />

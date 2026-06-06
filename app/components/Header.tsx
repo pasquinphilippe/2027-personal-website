@@ -7,6 +7,7 @@ import {
   primaryNavItems,
   services,
   siteConfig,
+  contactNavItem,
 } from '~/lib/pasquin';
 
 interface HeaderProps {
@@ -23,8 +24,8 @@ export function Header(_props: HeaderProps) {
     <header className="header no-print">
       <div className="container">
         <div className="header-inner">
-          <NavLink prefetch="intent" to="/" className="site-icon" end>
-            /p
+          <NavLink prefetch="intent" to="/" className="site-wordmark" end>
+            {siteConfig.logo}
           </NavLink>
 
           <div className="nav-wrap">
@@ -57,6 +58,9 @@ export function Header(_props: HeaderProps) {
                   </div>
                 </div>
               </div>
+              <NavLink className="nav-link contact-nav-link" prefetch="intent" to="/contact">
+                {contactNavItem.label}
+              </NavLink>
             </nav>
           </div>
 

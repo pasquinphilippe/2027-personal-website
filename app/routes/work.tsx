@@ -8,7 +8,7 @@ import {
 import {workItems} from '~/lib/pasquin';
 
 export const meta: Route.MetaFunction = () => [
-  {title: 'Work | Philippe Pasquin Shopify Developer'},
+  {title: 'Our Work | Philippe Pasquin Shopify Developer'},
   {
     name: 'description',
     content:
@@ -21,7 +21,7 @@ export default function WorkPage() {
 
   return (
     <>
-      <PageIntro title="Work" eyebrow="Selected Shopify work">
+      <PageIntro title="Our Work" eyebrow="Selected Shopify work">
         <div className="filter-row" aria-label="Work filters">
           {tags.map((tag) => (
             <span className="pill" key={tag}>
