@@ -72,21 +72,25 @@ export function HomeHero() {
   const language = useSelectedLanguage();
   const text = getSiteText(language);
   const reviewSummary = getPartnerReviewSummary();
-  const trustSignals =
+  const ratingLabel =
+    language === 'fr'
+      ? `${reviewSummary.rating} sur 5,0`
+      : `${reviewSummary.rating} out of 5.0`;
+  const trustSignals: Array<{label: string; type?: 'shopify' | 'rating'}> =
     language === 'fr'
       ? [
-          'Shopify Partner Directory',
-          `${reviewSummary.rating} / 5,0`,
-          `${reviewSummary.reviewCount} avis`,
-          'Partenaire depuis decembre 2021',
-          'Montreal / EN + FR',
+          {label: 'Shopify Partner Directory', type: 'shopify'},
+          {label: ratingLabel, type: 'rating'},
+          {label: `${reviewSummary.reviewCount} avis`},
+          {label: 'Partenaire depuis decembre 2021'},
+          {label: 'Montreal / EN + FR'},
         ]
       : [
-          'Shopify Partner Directory',
-          `${reviewSummary.rating} / 5.0`,
-          `${reviewSummary.reviewCount} reviews`,
-          `Partner since ${reviewSummary.partnerSince}`,
-          'Montreal / EN + FR',
+          {label: 'Shopify Partner Directory', type: 'shopify'},
+          {label: ratingLabel, type: 'rating'},
+          {label: `${reviewSummary.reviewCount} reviews`},
+          {label: `Partner since ${reviewSummary.partnerSince}`},
+          {label: 'Montreal / EN + FR'},
         ];
 
   return (
@@ -113,15 +117,27 @@ export function HomeHero() {
           className="hero-trust-row"
           aria-label="Shopify Partner trust signals"
         >
-          {trustSignals.map((signal, index) => (
+          {trustSignals.map((signal) => (
             <span
-              className={
-                index === 0 ? 'hero-trust-badge shopify' : 'hero-trust-badge'
-              }
-              key={signal}
+              className={[
+                'hero-trust-badge',
+                signal.type === 'shopify' ? 'shopify' : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              key={signal.label}
             >
-              {index === 0 ? <span aria-hidden="true">S</span> : null}
-              {signal}
+              {signal.type === 'shopify' ? (
+                <span aria-hidden="true">S</span>
+              ) : null}
+              {signal.type === 'rating' ? (
+                <>
+                  <span aria-hidden="true">★★★★★</span>
+                  <span className="sr-only">{signal.label}</span>
+                </>
+              ) : (
+                signal.label
+              )}
             </span>
           ))}
         </div>
