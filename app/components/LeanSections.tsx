@@ -101,15 +101,23 @@ export function HomeHero() {
         <div className="hero-text-wrap">
           <h1>{text.home.title}</h1>
           <div className="btn-grp">
-            <Link to={getLocalizedHref('/contact', language)} className="btn big">
+            <Link
+              to={getLocalizedHref('/contact', language)}
+              className="btn big"
+            >
               {text.home.cta}
             </Link>
           </div>
         </div>
-        <div className="hero-trust-row" aria-label="Shopify Partner trust signals">
+        <div
+          className="hero-trust-row"
+          aria-label="Shopify Partner trust signals"
+        >
           {trustSignals.map((signal, index) => (
             <span
-              className={index === 0 ? 'hero-trust-badge shopify' : 'hero-trust-badge'}
+              className={
+                index === 0 ? 'hero-trust-badge shopify' : 'hero-trust-badge'
+              }
               key={signal}
             >
               {index === 0 ? <span aria-hidden="true">S</span> : null}
@@ -206,7 +214,8 @@ export function WorkGrid({
   const language = useSelectedLanguage();
   const text = getSiteText(language);
   const workItems = getWorkItems(language);
-  const items = typeof limit === 'number' ? workItems.slice(0, limit) : workItems;
+  const items =
+    typeof limit === 'number' ? workItems.slice(0, limit) : workItems;
 
   if (variant === 'index') {
     return (
@@ -510,9 +519,7 @@ export function PricingCards() {
             <h2>$200/h</h2>
             <p>{text.pricing.perHour}</p>
           </div>
-          <div className="price-card-note">
-            {text.pricing.hourlyNote}
-          </div>
+          <div className="price-card-note">{text.pricing.hourlyNote}</div>
         </article>
         {pricingCards.map((item) => (
           <article className="price-card" key={item.name}>

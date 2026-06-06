@@ -22,7 +22,8 @@ import {
 
 export const meta: Route.MetaFunction = ({data, location}) => {
   const language =
-    data?.language ?? getLanguageFromPathSearch(location.pathname, location.search);
+    data?.language ??
+    getLanguageFromPathSearch(location.pathname, location.search);
   const siteUrl = data?.publicConfig.siteUrl || siteConfig.defaultSiteUrl;
   const canonical = getLocalizedUrl(siteUrl, '/testimonials', language);
   const alternateEn = getLocalizedUrl(siteUrl, '/testimonials', 'en');
@@ -114,9 +115,7 @@ export default function TestimonialsPage() {
         title={text.pages.testimonialsTitle}
         eyebrow={text.pages.testimonialsEyebrow}
       >
-        <p className="subtitle light">
-          {text.pages.testimonialsIntro}
-        </p>
+        <p className="subtitle light">{text.pages.testimonialsIntro}</p>
       </PageIntro>
       <FeedbackGrid />
       <div className="gap-xxl" />

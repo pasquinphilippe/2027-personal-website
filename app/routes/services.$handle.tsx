@@ -2,7 +2,11 @@ import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/services.$handle';
 import {CtaSection, MerchantWinsTicker} from '~/components/LeanSections';
 import {Breadcrumbs} from '~/components/Breadcrumbs';
-import {getLanguageFromRequest, getLocalizedHref, getLocalizedUrl} from '~/lib/i18n';
+import {
+  getLanguageFromRequest,
+  getLocalizedHref,
+  getLocalizedUrl,
+} from '~/lib/i18n';
 import {getPublicConfig, siteConfig} from '~/lib/pasquin';
 import {
   buildServiceStructuredData,
@@ -12,7 +16,8 @@ import {
 } from '~/lib/servicePages';
 
 export const meta: Route.MetaFunction = ({data, location}) => {
-  const language = data?.language ?? (location.pathname.startsWith('/fr') ? 'fr' : 'en');
+  const language =
+    data?.language ?? (location.pathname.startsWith('/fr') ? 'fr' : 'en');
   const service = data?.service;
   const siteUrl = data?.publicConfig.siteUrl || siteConfig.defaultSiteUrl;
 
@@ -27,9 +32,21 @@ export const meta: Route.MetaFunction = ({data, location}) => {
     ];
   }
 
-  const canonical = getLocalizedUrl(siteUrl, `/services/${service.slug}`, language);
-  const alternateEn = getLocalizedUrl(siteUrl, `/services/${service.slug}`, 'en');
-  const alternateFr = getLocalizedUrl(siteUrl, `/services/${service.slug}`, 'fr');
+  const canonical = getLocalizedUrl(
+    siteUrl,
+    `/services/${service.slug}`,
+    language,
+  );
+  const alternateEn = getLocalizedUrl(
+    siteUrl,
+    `/services/${service.slug}`,
+    'en',
+  );
+  const alternateFr = getLocalizedUrl(
+    siteUrl,
+    `/services/${service.slug}`,
+    'fr',
+  );
   const ogImage = `${siteUrl.replace(/\/$/, '')}/og/services/${service.slug}.svg`;
 
   return [
@@ -79,15 +96,24 @@ export async function loader({params, request, context}: Route.LoaderArgs) {
 }
 
 export default function ServicePage() {
-  const {language, service, references, relatedServices, structuredData, publicConfig} =
-    useLoaderData<typeof loader>();
+  const {
+    language,
+    service,
+    references,
+    relatedServices,
+    structuredData,
+    publicConfig,
+  } = useLoaderData<typeof loader>();
   const pricingHref = getLocalizedHref('/pricing', language);
   const contactHref = getLocalizedHref('/contact', language);
   const workHref = getLocalizedHref('/work', language);
   const breadcrumbItems = [
     {label: language === 'fr' ? 'Accueil' : 'Home', href: '/'},
     {label: language === 'fr' ? 'Services' : 'Services', href: '/services'},
-    {label: service.navLabel || service.title, href: `/services/${service.slug}`},
+    {
+      label: service.navLabel || service.title,
+      href: `/services/${service.slug}`,
+    },
   ];
   const labels =
     language === 'fr'
@@ -136,7 +162,10 @@ export default function ServicePage() {
             <div className="gap-l" />
             <h1>{service.title}</h1>
             <p className="subtitle light">{service.summary}</p>
-            <div className="pill-row service-keyword-row" aria-label={labels.overview}>
+            <div
+              className="pill-row service-keyword-row"
+              aria-label={labels.overview}
+            >
               {service.heroPoints.map((point) => (
                 <span className="pill" key={point}>
                   {point}

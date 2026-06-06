@@ -16,7 +16,8 @@ import {getServicePageSummaries} from '~/lib/servicePages';
 
 export const meta: Route.MetaFunction = ({data, location}) => {
   const language =
-    data?.language ?? getLanguageFromPathSearch(location.pathname, location.search);
+    data?.language ??
+    getLanguageFromPathSearch(location.pathname, location.search);
   const siteUrl = data?.publicConfig.siteUrl || siteConfig.defaultSiteUrl;
   const canonical = getLocalizedUrl(siteUrl, '/services', language);
   const title =

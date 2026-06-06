@@ -34,9 +34,13 @@
   --font-size-xlg: 24px;
   --transition: 0.1s ease;
   --transition2: 0.25s ease;
-  --font-body: "Suisse Intl", "Inter Display", -apple-system, BlinkMacSystemFont, "Segoe UI", helvetica, arial, sans-serif;
-  --font-heading: "Saans", "Suisse Intl", -apple-system, BlinkMacSystemFont, "Segoe UI", helvetica, arial, sans-serif;
-  --font-mono: "SFMono-Regular", "Roboto Mono", ui-monospace, monospace;
+  --font-body:
+    'Suisse Intl', 'Inter Display', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', helvetica, arial, sans-serif;
+  --font-heading:
+    'Saans', 'Suisse Intl', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    helvetica, arial, sans-serif;
+  --font-mono: 'SFMono-Regular', 'Roboto Mono', ui-monospace, monospace;
   --color-dark: var(--text1);
   --color-light: var(--white);
 }
@@ -85,9 +89,23 @@ body {
   min-width: 320px;
   color: var(--text1);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(247, 247, 247, 0.82) 30%, rgba(243, 247, 241, 0.86) 58%, rgba(247, 247, 247, 0.98) 100%),
-    linear-gradient(118deg, rgba(252, 158, 42, 0.14) 0%, rgba(252, 158, 42, 0) 34%),
-    linear-gradient(238deg, rgba(114, 160, 69, 0.12) 0%, rgba(114, 160, 69, 0) 34%),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.94) 0%,
+      rgba(247, 247, 247, 0.82) 30%,
+      rgba(243, 247, 241, 0.86) 58%,
+      rgba(247, 247, 247, 0.98) 100%
+    ),
+    linear-gradient(
+      118deg,
+      rgba(252, 158, 42, 0.14) 0%,
+      rgba(252, 158, 42, 0) 34%
+    ),
+    linear-gradient(
+      238deg,
+      rgba(114, 160, 69, 0.12) 0%,
+      rgba(114, 160, 69, 0) 34%
+    ),
     #f7f7f7;
   font-family: var(--font-body);
   font-size: var(--font-size-default);
@@ -354,7 +372,10 @@ h3,
   font-weight: 500;
   font-size: var(--font-size-sm);
   cursor: pointer;
-  transition: background var(--transition), box-shadow var(--transition2), transform var(--transition2);
+  transition:
+    background var(--transition),
+    box-shadow var(--transition2),
+    transform var(--transition2);
 }
 
 .btn:hover {
@@ -387,7 +408,7 @@ h3,
 }
 
 .feat-link:after {
-  content: " ->";
+  content: ' ->';
 }
 
 .pill-row,
@@ -553,7 +574,7 @@ aside main {
 }
 
 .header-inner:before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 8px -12px;
   z-index: 0;
@@ -647,7 +668,7 @@ aside main {
 }
 
 .brand-name:after {
-  content: "";
+  content: '';
   display: block;
   width: 5px;
   height: 5px;
@@ -661,11 +682,11 @@ aside main {
 }
 
 .site-icon:before {
-  content: "/";
+  content: '/';
 }
 
 .site-icon:after {
-  content: "pasquin";
+  content: 'pasquin';
 }
 
 .nav-wrap {
@@ -716,7 +737,9 @@ aside main {
   padding: 5px 14px 6px;
   border-radius: 100px;
   font-weight: 500;
-  transition: background var(--transition), color var(--transition);
+  transition:
+    background var(--transition),
+    color var(--transition);
 }
 
 .client-login-link {
@@ -755,7 +778,9 @@ aside main {
   color: var(--text3);
   font-weight: 600;
   line-height: 1;
-  transition: color var(--transition), background var(--transition);
+  transition:
+    color var(--transition),
+    background var(--transition);
 }
 
 .language-link:hover {
@@ -796,7 +821,10 @@ aside main {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: opacity var(--transition2), transform var(--transition2), visibility var(--transition2);
+  transition:
+    opacity var(--transition2),
+    transform var(--transition2),
+    visibility var(--transition2);
 }
 
 .nav-more:hover .nav-dropdown {
@@ -878,7 +906,11 @@ aside main {
 .page-intro {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.56),
+    rgba(255, 255, 255, 0)
+  );
 }
 
 .hero-text-wrap {
@@ -994,11 +1026,15 @@ aside main {
 }
 
 .client-login-panel:before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0 0 auto;
   height: 6px;
-  background: linear-gradient(90deg, var(--text0) 0 74%, var(--highlight) 74% 100%);
+  background: linear-gradient(
+    90deg,
+    var(--text0) 0 74%,
+    var(--highlight) 74% 100%
+  );
 }
 
 .client-login-list {
@@ -1091,7 +1127,11 @@ aside main {
 }
 
 .work-slider-slide {
-  flex: 0 0 min(calc(var(--content-max-width) - 2 * var(--gap-l)), calc(100vw - 2 * var(--gap-l)));
+  flex: 0 0
+    min(
+      calc(var(--content-max-width) - 2 * var(--gap-l)),
+      calc(100vw - 2 * var(--gap-l))
+    );
   min-width: 0;
   margin-right: 48px;
 }
@@ -1159,7 +1199,9 @@ aside main {
   background: transparent;
   text-align: left;
   cursor: pointer;
-  transition: color var(--transition), transform var(--transition);
+  transition:
+    color var(--transition),
+    transform var(--transition);
 }
 
 .project-index-button:hover,
@@ -1494,7 +1536,6 @@ aside main {
   .project-card-tags {
     display: none;
   }
-
 }
 
 .service-card-light {
@@ -1530,11 +1571,13 @@ aside main {
   font-size: 26px;
   font-weight: 500;
   text-align: center;
-  transition: color var(--transition2), background var(--transition2);
+  transition:
+    color var(--transition2),
+    background var(--transition2);
 }
 
 .logo-grid > a:before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 12px;
   z-index: -1;
@@ -1542,11 +1585,13 @@ aside main {
   background: rgba(255, 255, 255, 0.54);
   opacity: 0;
   transform: scale(0.96);
-  transition: opacity var(--transition2), transform var(--transition2);
+  transition:
+    opacity var(--transition2),
+    transform var(--transition2);
 }
 
 .logo-grid > a:after {
-  content: "";
+  content: '';
   position: absolute;
   left: 22px;
   right: 22px;
@@ -1557,7 +1602,9 @@ aside main {
   opacity: 0;
   transform: scaleX(0.24);
   transform-origin: left;
-  transition: opacity var(--transition2), transform var(--transition2);
+  transition:
+    opacity var(--transition2),
+    transform var(--transition2);
 }
 
 .logo-grid > a span {
@@ -1625,7 +1672,11 @@ aside main {
   overflow: hidden;
   padding: clamp(18px, 2vw, 28px);
   background:
-    linear-gradient(132deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.28)),
+    linear-gradient(
+      132deg,
+      rgba(255, 255, 255, 0.72),
+      rgba(255, 255, 255, 0.28)
+    ),
     linear-gradient(132deg, rgba(114, 160, 69, 0.1), rgba(252, 158, 42, 0.08));
   box-shadow:
     0 0 0 var(--border-width) rgba(43, 43, 37, 0.08),
@@ -2465,13 +2516,17 @@ aside input {
   --portal-glass-strong: rgba(255, 255, 255, 0.9);
   --portal-glass-soft: rgba(255, 255, 255, 0.52);
   --portal-border: rgba(38, 38, 34, 0.12);
-  --portal-shadow: 0 22px 70px rgba(29, 28, 24, 0.07),
-    0 1px 1px rgba(29, 28, 24, 0.04),
+  --portal-shadow:
+    0 22px 70px rgba(29, 28, 24, 0.07), 0 1px 1px rgba(29, 28, 24, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.72);
   --portal-shadow-soft: 0 10px 32px rgba(29, 28, 24, 0.045);
   min-height: calc(100vh - 90px);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(247, 247, 245, 0.94)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.78),
+      rgba(247, 247, 245, 0.94)
+    ),
     var(--bg1);
 }
 
@@ -2702,7 +2757,9 @@ aside input {
   background: transparent;
   font: inherit;
   text-align: left;
-  transition: background var(--transition2), box-shadow var(--transition2);
+  transition:
+    background var(--transition2),
+    box-shadow var(--transition2);
   cursor: pointer;
 }
 
@@ -2815,7 +2872,9 @@ aside input {
   background: transparent;
   text-align: left;
   cursor: pointer;
-  transition: background var(--transition2), color var(--transition2);
+  transition:
+    background var(--transition2),
+    color var(--transition2);
 }
 
 .portal-phase-nav button:hover,
@@ -3895,7 +3954,10 @@ aside input {
 
 .admin-account-row {
   display: grid;
-  grid-template-columns: minmax(180px, 0.9fr) minmax(170px, 0.8fr) minmax(0, 1.3fr) minmax(160px, 0.7fr);
+  grid-template-columns: minmax(180px, 0.9fr) minmax(170px, 0.8fr) minmax(
+      0,
+      1.3fr
+    ) minmax(160px, 0.7fr);
   gap: var(--gap-s);
   padding: 18px;
   background: var(--portal-glass-soft);
@@ -3953,11 +4015,17 @@ aside input {
   }
 
   .portal-rail-panel {
+    grid-column: 1 / -1;
     position: static;
     max-height: none;
     overflow: visible;
     gap: var(--gap-s);
     padding: var(--gap-s);
+    transform: none !important;
+  }
+
+  .portal-main {
+    grid-column: 1 / -1;
   }
 
   .portal-client-card {
@@ -3970,18 +4038,19 @@ aside input {
   }
 
   .portal-dashboard-menu > div {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    scroll-snap-type: x mandatory;
+    overflow: visible;
+    padding-bottom: 0;
+    scroll-snap-type: none;
   }
 
   .portal-dashboard-menu button {
     grid-template-columns: 1fr;
-    min-width: 170px;
+    min-width: 0;
     min-height: 76px;
-    scroll-snap-align: start;
+    scroll-snap-align: none;
   }
 
   .portal-dashboard-menu button span {

@@ -50,9 +50,7 @@ export const primaryNavItems = [
   {label: 'About', href: '/about'},
 ];
 
-export const moreNavItems = [
-  {label: 'Testimonials', href: '/testimonials'},
-];
+export const moreNavItems = [{label: 'Testimonials', href: '/testimonials'}];
 
 export const contactNavItem = {label: 'Contact', href: '/contact'};
 
@@ -89,7 +87,8 @@ export const siteText = {
       title: 'Shopify development that keeps your store moving.',
       cta: 'Get In Touch',
       featuredWorkAria: 'Featured Shopify work',
-      serviceHeading: 'Shopify support across the work that slows merchants down',
+      serviceHeading:
+        'Shopify support across the work that slows merchants down',
       logoHeading: 'I work where Shopify stores usually get messy',
     },
     pricing: {
@@ -117,8 +116,7 @@ export const siteText = {
     footer: {
       services: 'Services',
       shopifyWork: 'Shopify work',
-      note:
-        'Personal Shopify development from Montreal for merchants who need lean execution, cleaner storefronts, and steady technical support.',
+      note: 'Personal Shopify development from Montreal for merchants who need lean execution, cleaner storefronts, and steady technical support.',
       cta: 'Get in touch',
       line1: 'Montreal, Quebec / Shopify development',
       line2: 'Bank of hours + monthly retainers',
@@ -215,12 +213,15 @@ export const siteText = {
       clientAria: 'Compte client',
     },
     home: {
-      proof: "Banques d'heures a partir de 1 000 $ / Developpeur Shopify a Montreal",
+      proof:
+        "Banques d'heures a partir de 1 000 $ / Developpeur Shopify a Montreal",
       title: 'Developpement Shopify pour garder votre boutique en mouvement.',
       cta: 'Prendre rendez-vous',
       featuredWorkAria: 'Projets Shopify selectionnes',
-      serviceHeading: 'Du support Shopify pour le travail qui ralentit les marchands',
-      logoHeading: 'J’interviens la ou les boutiques Shopify deviennent complexes',
+      serviceHeading:
+        'Du support Shopify pour le travail qui ralentit les marchands',
+      logoHeading:
+        'J’interviens la ou les boutiques Shopify deviennent complexes',
     },
     pricing: {
       byHour: "A l'heure",
@@ -247,8 +248,7 @@ export const siteText = {
     footer: {
       services: 'Services',
       shopifyWork: 'Travail Shopify',
-      note:
-        'Developpement Shopify personnel depuis Montreal pour les marchands qui ont besoin d’execution lean, de boutiques plus claires et de support technique stable.',
+      note: 'Developpement Shopify personnel depuis Montreal pour les marchands qui ont besoin d’execution lean, de boutiques plus claires et de support technique stable.',
       cta: 'Prendre contact',
       line1: 'Montreal, Quebec / Developpement Shopify',
       line2: "Banques d'heures + retainers mensuels",
@@ -268,7 +268,7 @@ export const siteText = {
       aboutTitle: 'Bonjour. Je suis Philippe.',
       aboutEyebrow: 'A propos',
       aboutIntro:
-        "Developpeur Shopify base a Montreal, j’aide les marchands a avancer plus vite sans transformer chaque changement storefront en gros projet d’agence.",
+        'Developpeur Shopify base a Montreal, j’aide les marchands a avancer plus vite sans transformer chaque changement storefront en gros projet d’agence.',
       testimonialsTitle: 'Temoignages',
       testimonialsEyebrow: 'Avis Shopify Partner',
       testimonialsIntro:
@@ -288,7 +288,8 @@ export const siteText = {
         'Le but est simple. Rendre la boutique plus claire, plus facile a maintenir et plus facile a operer apres la livraison.',
         'En bref, j’aide les equipes Shopify a continuer d’avancer quand le travail technique est specifique, en retard ou trop important pour rester vague.',
       ],
-      profileTitle: 'Un developpeur Shopify, directement responsable du travail.',
+      profileTitle:
+        'Un developpeur Shopify, directement responsable du travail.',
       profileText:
         "Les banques d'heures et les retainers sont concus pour les marchands qui veulent une portee claire, des boucles de feedback rapides et du code qui ne cree pas un nouveau probleme de maintenance.",
     },
@@ -669,7 +670,8 @@ export const partnerReviewSummary = {
   reviewCount: 4,
   partnerSince: 'December 2021',
   sourceName: 'Shopify Partner Directory',
-  sourceUrl: 'https://www.shopify.com/partners/directory/partner/philippe-pasquin',
+  sourceUrl:
+    'https://www.shopify.com/partners/directory/partner/philippe-pasquin',
   priceRange: 'Starting from $150',
 };
 
@@ -678,7 +680,8 @@ export const partnerReviews = [
     author: 'Redcallas',
     date: 'Dec 19, 2024',
     datePublished: '2024-12-19',
-    quote: 'Philippe did a great work for us considering the last minute request.',
+    quote:
+      'Philippe did a great work for us considering the last minute request.',
     service: 'Theme customization',
     quality: 5,
     communication: 5,
@@ -757,13 +760,13 @@ const servicesFr = [
   {
     label: 'Produits',
     title: 'Systemes storefront',
-    text: "Pages produits, parcours de collections, details panier et logique de merchandising pour des boutiques plus faciles a acheter.",
+    text: 'Pages produits, parcours de collections, details panier et logique de merchandising pour des boutiques plus faciles a acheter.',
     bullets: ['PDP', 'Collections', 'Panier UX', 'Metafields'],
   },
   {
     label: 'Sites',
     title: 'Nettoyage de theme',
-    text: "Travail Shopify soigneux pour templates lents, sections fragiles, lancements brises et code devenu difficile a faire evoluer.",
+    text: 'Travail Shopify soigneux pour templates lents, sections fragiles, lancements brises et code devenu difficile a faire evoluer.',
     bullets: ['Sections', 'Templates', 'Vitesse', 'QA'],
   },
   {
@@ -803,7 +806,7 @@ const workItemFrOverrides = {
   },
   'sportive-plus': {
     eyebrow: 'Theme, rabais, etiquettes, maintenance',
-    text: "Developpement complet du theme, rabais et etiquettes personnalises, maintenance technique hebdomadaire et reduction de 45 apps a 5.",
+    text: 'Developpement complet du theme, rabais et etiquettes personnalises, maintenance technique hebdomadaire et reduction de 45 apps a 5.',
     tags: ['theme', 'rabais', 'support'],
   },
   'rd-cosmetic': {
@@ -967,7 +970,7 @@ const processStepsFr = [
   {
     number: '02',
     title: 'Cadrer',
-    text: "Choisir la bonne banque ou le bon retainer, definir ce qui compte et eviter de transformer chaque correctif en gros projet.",
+    text: 'Choisir la bonne banque ou le bon retainer, definir ce qui compte et eviter de transformer chaque correctif en gros projet.',
   },
   {
     number: '03',
@@ -1109,7 +1112,8 @@ export function getWorkItems(language: LanguageCode = 'en') {
 
   return workItems.map((item) => ({
     ...item,
-    ...(workItemFrOverrides[item.slug as keyof typeof workItemFrOverrides] ?? {}),
+    ...(workItemFrOverrides[item.slug as keyof typeof workItemFrOverrides] ??
+      {}),
   }));
 }
 
@@ -1205,7 +1209,8 @@ export function buildStructuredData({
         image: logoUrl,
         logo: logoUrl,
         priceRange: siteConfig.priceRange,
-        jobTitle: language === 'fr' ? 'Developpeur Shopify' : 'Shopify Developer',
+        jobTitle:
+          language === 'fr' ? 'Developpeur Shopify' : 'Shopify Developer',
         description: businessDescription,
         sameAs: siteConfig.socialProfiles,
         address: {
@@ -1263,7 +1268,8 @@ export function buildStructuredData({
             description: `${offer.hours}. ${offer.bestFor}. ${offer.detail}. ${offer.rollover}.`,
             priceCurrency: 'CAD',
             price: offer.price.replace(/[^0-9]/g, '') || undefined,
-            category: language === 'fr' ? 'Retainer mensuel' : 'Monthly retainer',
+            category:
+              language === 'fr' ? 'Retainer mensuel' : 'Monthly retainer',
           })),
         ],
       },

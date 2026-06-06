@@ -96,7 +96,7 @@ export function Header({isLoggedIn}: HeaderProps) {
           </div>
 
           <div className="header-actions">
-              <LanguageSwitcher />
+            <LanguageSwitcher />
             <ClientLoginLink isLoggedIn={isLoggedIn} language={language} />
             <NavLink
               className="btn secondary header-contact-btn"
@@ -128,7 +128,10 @@ export function HeaderMenu({
   const services = getServicePageSummaries(language, 'services');
 
   return (
-    <nav className={`header-menu-${viewport}`} aria-label={`${viewport} navigation`}>
+    <nav
+      className={`header-menu-${viewport}`}
+      aria-label={`${viewport} navigation`}
+    >
       {navItems.map((item) => (
         <NavLink
           key={item.href}
@@ -267,7 +270,11 @@ function HeaderMenuMobileToggle() {
   const language = useSelectedLanguage();
   const text = getSiteText(language);
   return (
-    <button className="menu-toggle reset" onClick={() => open('mobile')} type="button">
+    <button
+      className="menu-toggle reset"
+      onClick={() => open('mobile')}
+      type="button"
+    >
       {text.nav.menu}
     </button>
   );

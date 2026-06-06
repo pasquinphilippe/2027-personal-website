@@ -25,7 +25,8 @@ const ABOUT_REFERENCE_IMAGE_SIZES =
 
 export const meta: Route.MetaFunction = ({data, location}) => {
   const language =
-    data?.language ?? getLanguageFromPathSearch(location.pathname, location.search);
+    data?.language ??
+    getLanguageFromPathSearch(location.pathname, location.search);
   const siteUrl = data?.publicConfig?.siteUrl || siteConfig.defaultSiteUrl;
   const title =
     language === 'fr'
@@ -99,10 +100,11 @@ export default function AboutPage() {
 
   return (
     <>
-      <PageIntro title={text.pages.aboutTitle} eyebrow={text.pages.aboutEyebrow}>
-        <p className="subtitle light">
-          {text.pages.aboutIntro}
-        </p>
+      <PageIntro
+        title={text.pages.aboutTitle}
+        eyebrow={text.pages.aboutEyebrow}
+      >
+        <p className="subtitle light">{text.pages.aboutIntro}</p>
       </PageIntro>
 
       <section className="container about-profile-strip">
@@ -140,9 +142,7 @@ export default function AboutPage() {
             <div className="mini-heading">{referenceLabel}</div>
             <h2>{text.about.profileTitle}</h2>
           </div>
-          <p className="light">
-            {text.about.profileText}
-          </p>
+          <p className="light">{text.about.profileText}</p>
         </div>
         <div className="about-reference-grid">
           {workItems.map((item) => (

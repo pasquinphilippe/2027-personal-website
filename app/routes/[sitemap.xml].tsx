@@ -221,7 +221,9 @@ function buildUrlEntry({
     '  <url>',
     `    <loc>${escapeXml(loc)}</loc>`,
     `    <xhtml:link rel="alternate" hreflang="${entry.hreflang}" href="${escapeXml(loc)}" />`,
-    alternate ? `    <xhtml:link rel="alternate" hreflang="${alternateLanguage(entry.hreflang)}" href="${escapeXml(alternate)}" />` : '',
+    alternate
+      ? `    <xhtml:link rel="alternate" hreflang="${alternateLanguage(entry.hreflang)}" href="${escapeXml(alternate)}" />`
+      : '',
     `    <lastmod>${lastmod}</lastmod>`,
     `    <changefreq>${entry.changefreq}</changefreq>`,
     `    <priority>${entry.priority}</priority>`,
