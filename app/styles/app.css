@@ -2115,6 +2115,18 @@ aside main {
   margin-top: auto;
 }
 
+.footer-legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.footer-legal-links a {
+  display: inline-flex;
+  width: fit-content;
+  line-height: 1.25;
+}
+
 /*
 * --------------------------------------------------
 * Hydrogen commerce route fallback
