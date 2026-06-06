@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {Link} from 'react-router';
 import type {ReactNode} from 'react';
 import {
@@ -158,30 +159,94 @@ export function LogoGrid() {
 
 export function WorkGrid({limit}: {limit?: number}) {
   const language = useSelectedLanguage();
+  const text = getSiteText(language);
   const workItems = getWorkItems(language);
   const items = typeof limit === 'number' ? workItems.slice(0, limit) : workItems;
+  const [activeSlug, setActiveSlug] = useState(items[0]?.slug ?? '');
+  const activeItem = items.find((item) => item.slug === activeSlug) ?? items[0];
+
+  if (!activeItem) return null;
 
   return (
-    <section className="container wide">
-      <div className="project-grid">
-        <div className="cols two-up med-gap">
-          {items.map((item) => (
-            <ProjectCover item={item} key={item.slug} />
-          ))}
+    <section className="container wide project-index-section">
+      <div className="project-index" aria-label={text.home.featuredWorkAria}>
+        <div className="project-index-list">
+          {items.map((item, index) => {
+            const isActive = item.slug === activeItem.slug;
+
+            return (
+              <div className="project-index-row" key={item.slug}>
+                <button
+                  aria-controls="project-index-preview"
+                  aria-pressed={isActive}
+                  className={`project-index-button${isActive ? ' active' : ''}`}
+                  onClick={() => setActiveSlug(item.slug)}
+                  onFocus={() => setActiveSlug(item.slug)}
+                  onMouseEnter={() => setActiveSlug(item.slug)}
+                  type="button"
+                >
+                  <span className="project-list-number">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span className="project-list-title">{item.title}</span>
+                </button>
+              </div>
+            );
+          })}
         </div>
+        <ProjectIndexPreview item={activeItem} language={language} />
       </div>
     </section>
   );
 }
 
-export function ProjectCover({item}: {item: ReturnType<typeof getWorkItems>[number]}) {
+function ProjectIndexPreview({
+  item,
+  language,
+}: {
+  item: ReturnType<typeof getWorkItems>[number];
+  language: ReturnType<typeof useSelectedLanguage>;
+}) {
+  const initials = getProjectInitials(item.title);
+  const preview = (
+    <>
+      <img src={item.image} alt={`${item.title} website screenshot`} loading="lazy" />
+      <span className="project-index-preview-mark" aria-hidden="true">
+        {initials}
+      </span>
+    </>
+  );
+
+  if ('href' in item && item.href) {
+    return (
+      <a
+        aria-label={`${item.title} website`}
+        className="project-index-preview"
+        href={item.href}
+        id="project-index-preview"
+        rel="noreferrer"
+        target="_blank"
+      >
+        {preview}
+      </a>
+    );
+  }
+
+  return (
+    <Link
+      aria-label={item.title}
+      className="project-index-preview"
+      id="project-index-preview"
+      to={getLocalizedHref('/contact', language)}
+    >
+      {preview}
+    </Link>
+  );
+}
+
+function ProjectCover({item}: {item: ReturnType<typeof getWorkItems>[number]}) {
   const language = useSelectedLanguage();
-  const initials = item.title
-    .split(/\s+/)
-    .map((word) => word[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
+  const initials = getProjectInitials(item.title);
 
   const cover = (
     <>
@@ -218,11 +283,11 @@ export function ProjectCover({item}: {item: ReturnType<typeof getWorkItems>[numb
   if ('href' in item && item.href) {
     return (
       <a
+        aria-label={`${item.title} website`}
         className="project-card"
         href={item.href}
-        target="_blank"
         rel="noreferrer"
-        aria-label={`${item.title} website`}
+        target="_blank"
       >
         {cover}
       </a>
@@ -231,13 +296,22 @@ export function ProjectCover({item}: {item: ReturnType<typeof getWorkItems>[numb
 
   return (
     <Link
+      aria-label={item.title}
       className="project-card"
       to={getLocalizedHref('/contact', language)}
-      aria-label={item.title}
     >
       {cover}
     </Link>
   );
+}
+
+function getProjectInitials(title: string) {
+  return title
+    .split(/\s+/)
+    .map((word) => word[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 }
 
 export function PricingCards() {
