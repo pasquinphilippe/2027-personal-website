@@ -763,6 +763,20 @@ aside main {
   background: var(--text0);
 }
 
+.header-actions .language-switcher {
+  gap: 1px;
+  min-height: 26px;
+  padding: 2px;
+}
+
+.header-actions .language-link {
+  min-width: 25px;
+  min-height: 22px;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
 .nav-more {
   cursor: default;
 }
