@@ -8,6 +8,7 @@ import {
   getProcessSteps,
   getServices,
   getSiteText,
+  getWorkItems,
   siteConfig,
 } from '~/lib/pasquin';
 import {getLanguageFromPathSearch, useSelectedLanguage} from '~/lib/i18n';
@@ -37,6 +38,31 @@ export default function AboutPage() {
   const text = getSiteText(language);
   const services = getServices(language);
   const processSteps = getProcessSteps(language);
+  const workItems = getWorkItems(language).slice(0, 3);
+  const profileLabel =
+    language === 'fr'
+      ? 'Developpeur Shopify / Montreal'
+      : 'Shopify developer / Montreal';
+  const storyLabel =
+    language === 'fr' ? 'Pourquoi ce service existe' : 'Why this exists';
+  const referenceLabel =
+    language === 'fr' ? 'References Shopify' : 'Shopify references';
+  const operatingLabel =
+    language === 'fr' ? 'Mode de travail' : 'Operating style';
+  const principles =
+    language === 'fr'
+      ? [
+          'Proche du marchand',
+          'Scope clair',
+          'Execution legere',
+          'Notes de transfert',
+        ]
+      : [
+          'Close to the merchant',
+          'Clear scope',
+          'Lean execution',
+          'Handoff notes',
+        ];
 
   return (
     <>
@@ -46,55 +72,85 @@ export default function AboutPage() {
         </p>
       </PageIntro>
 
-      <section className="container about-team-map">
-        <div className="about-team-row">
+      <section className="container about-profile-strip">
+        <div className="about-profile-primary">
+          <span className="mini-heading">{profileLabel}</span>
+          <h2>{siteConfig.name}</h2>
+        </div>
+        <div className="about-profile-services">
           {services.map((service) => (
-            <article className="about-person-card" key={service.title}>
-              <div className="about-avatar">{service.title.slice(0, 1)}</div>
-              <div>
-                <strong>{service.title}</strong>
-                <span>{service.label}</span>
-              </div>
-            </article>
+            <span key={service.title}>{service.title}</span>
           ))}
-          <article className="about-person-card">
-            <div className="about-avatar">S</div>
-            <div>
-              <strong>{text.about.supportRhythm}</strong>
-              <span>{text.about.retainers}</span>
-            </div>
-          </article>
+          <span>{text.about.supportRhythm}</span>
         </div>
       </section>
 
       <div className="gap-xxl" />
 
-      <section className="container medium story-copy">
-        <div className="mini-heading">{text.about.date}</div>
-        {text.about.paragraphs.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
+      <section className="container about-story">
+        <aside>
+          <div className="mini-heading">{text.about.date}</div>
+          <h2>{storyLabel}</h2>
+        </aside>
+        <div className="about-story-copy">
+          {text.about.paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
       </section>
 
       <div className="gap-xxl" />
 
-      <section className="container">
-        <div className="card profile-card">
+      <section className="container about-reference-section">
+        <div className="about-reference-head">
           <div>
-            <div className="mini-heading">{siteConfig.location.city}</div>
+            <div className="mini-heading">{referenceLabel}</div>
             <h2>{text.about.profileTitle}</h2>
-            <div className="gap-m" />
-            <div className="process-inline">
-              {processSteps.map((step) => (
-                <span key={step.title}>
-                  {step.number} {step.title}
-                </span>
-              ))}
-            </div>
           </div>
           <p className="light">
             {text.about.profileText}
           </p>
+        </div>
+        <div className="about-reference-grid">
+          {workItems.map((item) => (
+            <a
+              className="about-reference-card"
+              href={item.href}
+              key={item.slug}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <img
+                src={item.image}
+                alt={`${item.title} Shopify project screenshot`}
+                width={1440}
+                height={935}
+                loading="lazy"
+                decoding="async"
+              />
+              <span>{item.title}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <div className="gap-xxl" />
+
+      <section className="container about-operating">
+        <div>
+          <div className="mini-heading">{operatingLabel}</div>
+          <div className="process-inline">
+            {processSteps.map((step) => (
+              <span key={step.title}>
+                {step.number} {step.title}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="about-principle-list">
+          {principles.map((item) => (
+            <p key={item}>{item}</p>
+          ))}
         </div>
       </section>
 
