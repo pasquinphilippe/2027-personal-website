@@ -30,6 +30,10 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
   // revalidate when a mutation is performed e.g add to cart, login...
   if (formMethod && formMethod !== 'GET') return true;
 
+  if (currentUrl.searchParams.get('lang') !== nextUrl.searchParams.get('lang')) {
+    return true;
+  }
+
   // revalidate when manually revalidating via useRevalidator
   if (currentUrl.toString() === nextUrl.toString()) return true;
 
@@ -77,6 +81,7 @@ export async function loader(args: Route.LoaderArgs) {
   return {
     ...deferredData,
     ...criticalData,
+    language: getRequestLanguage(args.request),
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
     shop: getShopAnalytics({
       storefront,
@@ -91,6 +96,11 @@ export async function loader(args: Route.LoaderArgs) {
       language: args.context.storefront.i18n.language,
     },
   };
+}
+
+function getRequestLanguage(request: Request) {
+  const url = new URL(request.url);
+  return url.searchParams.get('lang') === 'fr' ? 'fr' : 'en';
 }
 
 /**
@@ -143,9 +153,11 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export function Layout({children}: {children?: React.ReactNode}) {
   const nonce = useNonce();
+  const data = useRouteLoaderData<RootLoader>('root');
+  const language = data?.language === 'fr' ? 'fr-CA' : 'en-CA';
 
   return (
-    <html lang="en-CA">
+    <html lang={language}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />

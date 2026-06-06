@@ -20,14 +20,20 @@ export function PageLayout({
   children = null,
   footer,
   header,
+  isLoggedIn,
   publicStoreDomain,
 }: PageLayoutProps) {
   return (
     <Aside.Provider>
-      <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
+      <MobileMenuAside
+        header={header}
+        isLoggedIn={isLoggedIn}
+        publicStoreDomain={publicStoreDomain}
+      />
       {header && (
         <Header
           header={header}
+          isLoggedIn={isLoggedIn}
           publicStoreDomain={publicStoreDomain}
         />
       )}
@@ -43,15 +49,18 @@ export function PageLayout({
 
 function MobileMenuAside({
   header,
+  isLoggedIn,
   publicStoreDomain,
 }: {
   header: PageLayoutProps['header'];
+  isLoggedIn: PageLayoutProps['isLoggedIn'];
   publicStoreDomain: PageLayoutProps['publicStoreDomain'];
 }) {
   return (
     <Aside type="mobile" heading="MENU">
       <HeaderMenu
         header={header}
+        isLoggedIn={isLoggedIn}
         viewport="mobile"
         publicStoreDomain={publicStoreDomain}
       />
