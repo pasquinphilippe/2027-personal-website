@@ -72,6 +72,7 @@ export function HomeHero() {
   const language = useSelectedLanguage();
   const text = getSiteText(language);
   const reviewSummary = getPartnerReviewSummary();
+  const workCount = getWorkItems(language).length;
   const ratingLabel =
     language === 'fr'
       ? `${reviewSummary.rating} sur 5,0`
@@ -81,14 +82,14 @@ export function HomeHero() {
       ? [
           {label: 'Shopify Partner Directory', type: 'shopify'},
           {label: ratingLabel, type: 'rating'},
-          {label: `${reviewSummary.reviewCount} avis`},
+          {label: `${workCount} boutiques Shopify accompagnees`},
           {label: 'Partenaire depuis decembre 2021'},
           {label: 'Montreal / EN + FR'},
         ]
       : [
           {label: 'Shopify Partner Directory', type: 'shopify'},
           {label: ratingLabel, type: 'rating'},
-          {label: `${reviewSummary.reviewCount} reviews`},
+          {label: `Worked with ${workCount} Shopify stores`},
           {label: `Partner since ${reviewSummary.partnerSince}`},
           {label: 'Montreal / EN + FR'},
         ];
